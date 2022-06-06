@@ -11,6 +11,7 @@ import com.example.domain.Code;
 import com.example.domain.User;
 import com.example.service.UserService;
 import com.example.utils.CodeUtils;
+import com.example.utils.SendMail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Autowired
     private CodeUtils codeUtils;
+
+    @Autowired
+    private SendMail sendMail;
 
 
     @CreateCache(name = "jetCache",expire = 120,cacheType = CacheType.BOTH)
@@ -42,6 +46,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     public String loginByEmail(String email){
         String checkcode = codeUtils.generator(email);
         jetCache.put(email,checkcode);
+        sendMail.sendMail(checkcode);
         return checkcode;
     }
 
