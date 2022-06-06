@@ -16,4 +16,8 @@ public interface UserService extends IService<User> {
 
     public User selectById(int id);
 
+    public String loginByEmail(String email);
+
+    public boolean checkCode(String email,String checkcode);
+
 }

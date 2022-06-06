@@ -34,6 +34,23 @@ public class UserController {
         return new Result(code, flag, msg);
     }
 
+    @GetMapping("email/{email}")
+    public Result loginByEmail(@PathVariable String email) {
+        String trueCode = userService.loginByEmail(email);
+        int code = trueCode != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = trueCode != null ? "" : "ERROR";
+        return new Result(code, trueCode, msg);
+    }
+
+    @PostMapping("/{email}/{checkcode}")
+    public Result checkCode(@PathVariable String email,@PathVariable String checkcode) {
+        boolean flag = userService.checkCode(email, checkcode);
+        int code = flag != false ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = flag != false ? "" : "ERROR";
+        return new Result(code, flag, msg);
+    }
+
+
     @GetMapping
     //查询所有
     public Result selectAll() {
