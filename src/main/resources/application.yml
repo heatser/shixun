@@ -13,10 +13,10 @@ spring:
     host: smtp.163.com
     username: a1361422853@163.com
     password: XEPRIIEXYAKCTMNT
-  mvc:
-    view:
-      prefix: /
-      suffix: .jsp
+#  mvc:
+#    view:
+#      prefix: /
+#      suffix: .jsp
 
 
 management:
