@@ -26,6 +26,9 @@ public class InOrderController {
         List<InOrder> list = inOrderService.list(null);
         int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
         String msg = list != null ? "" : "ERROR";
+
+        System.out.println("---------");
+
         return new Result(code, list, msg);
 
     }
@@ -38,6 +41,16 @@ public class InOrderController {
         String msg = inOrder != null ? "" : "ERROR";
         return new Result(code, inOrder, msg);
 
+    }
+
+
+    @GetMapping("/condition")
+    public Result selectByCondition(@RequestBody InOrder inOrder){
+        List<InOrder> list = inOrderService.selectByCondition(inOrder);
+        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = list != null ? "" : "ERROR";
+        System.out.println("++++++++++++");
+        return new Result(code, list, msg);
     }
 
 
@@ -95,4 +108,5 @@ public class InOrderController {
         String msg = flag != false ? "" : "ERROR";
         return new Result(code, flag, msg);
     }
+
 }

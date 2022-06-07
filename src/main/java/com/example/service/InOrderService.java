@@ -20,5 +20,7 @@ public interface InOrderService extends IService<InOrder> {
 
     public InOrder selectById(int id);
 
+    public List<InOrder> selectByCondition(InOrder inOrder);
+
 
 }
