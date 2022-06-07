@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductService extends IService<Product> {
 
-    public List<Product> selectAll();
+    public List<Product> selectAllAndDeleted();
 
 
 

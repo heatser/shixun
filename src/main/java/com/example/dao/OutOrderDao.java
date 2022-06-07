@@ -11,6 +11,6 @@ import java.util.List;
 public interface OutOrderDao extends BaseMapper<OutOrder> {
 
     @Select("select * from outorder ")
-    public List<OutOrder> selectAll();
+    public List<OutOrder> selectAllAndDeleted();
 
 }

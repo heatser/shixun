@@ -13,6 +13,6 @@ import java.util.List;
 public interface InOrderDao extends BaseMapper<InOrder> {
 
     @Select("select * from inorder ")
-    public List<InOrder> selectAll();
+    public List<InOrder> selectAllAndDeleted();
 
 }

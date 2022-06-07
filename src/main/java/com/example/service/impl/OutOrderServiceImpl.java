@@ -23,8 +23,8 @@ public class OutOrderServiceImpl extends ServiceImpl<OutOrderDao, OutOrder> impl
 
 
 
-    public List<OutOrder> selectAll(){
-        List<OutOrder> outOrders = outOrderDao.selectAll();
+    public List<OutOrder> selectAllAndDeleted(){
+        List<OutOrder> outOrders = outOrderDao.selectAllAndDeleted();
         return outOrders;
     }
 
@@ -36,7 +36,7 @@ public class OutOrderServiceImpl extends ServiceImpl<OutOrderDao, OutOrder> impl
     }
 
     public List<OutOrder> selectByDate(Date date){
-        List<OutOrder> outOrders = outOrderDao.selectAll();
+        List<OutOrder> outOrders = outOrderDao.selectAllAndDeleted();
         return outOrders;
     }
 

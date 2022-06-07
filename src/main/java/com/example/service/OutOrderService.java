@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface OutOrderService extends IService<OutOrder> {
 
-    public List<OutOrder> selectAll();
+    public List<OutOrder> selectAllAndDeleted();
 
     public List<OutOrder> selectByStore(String name);
 

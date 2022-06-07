@@ -19,7 +19,7 @@ public class ProductController {
 
     @GetMapping
     public Result selectAll(){
-        List<Product> list = productService.selectAll();
+        List<Product> list = productService.list(null);
         int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
         String msg = list != null ? "" : "ERROR";
         return new Result(code, list, msg);

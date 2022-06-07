@@ -10,13 +10,15 @@ import java.util.List;
 
 public interface InOrderService extends IService<InOrder> {
 
-    public List<InOrder> selectAll();
+    public List<InOrder> selectAllAndDeleted();
 
     public List<InOrder> selectByStore(String name);
 
     public List<InOrder> selectByDate(Date date);
 
     public List<InOrder> selectByNo(String no);
+
+    public InOrder selectById(int id);
 
 
 }

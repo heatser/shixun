@@ -17,8 +17,8 @@ public class InOrderServiceImpl extends ServiceImpl<InOrderDao, InOrder> impleme
     @Autowired
     private InOrderDao inOrderDao;
 
-    public List<InOrder> selectAll(){
-        List<InOrder> inOrders = inOrderDao.selectAll();
+    public List<InOrder> selectAllAndDeleted(){
+        List<InOrder> inOrders = inOrderDao.selectAllAndDeleted();
         return inOrders;
     }
 
@@ -30,7 +30,7 @@ public class InOrderServiceImpl extends ServiceImpl<InOrderDao, InOrder> impleme
     }
 
     public List<InOrder> selectByDate(Date date){
-        List<InOrder> inOrders = inOrderDao.selectAll();
+        List<InOrder> inOrders = inOrderDao.selectAllAndDeleted();
         return inOrders;
     }
 
@@ -39,6 +39,11 @@ public class InOrderServiceImpl extends ServiceImpl<InOrderDao, InOrder> impleme
         lqw.like(InOrder::getNo, no);
         List<InOrder> inOrders = inOrderDao.selectList(lqw);
         return inOrders;
+    }
+
+    public InOrder selectById(int id){
+        InOrder inOrder = inOrderDao.selectById(id);
+        return inOrder;
     }
 
 }

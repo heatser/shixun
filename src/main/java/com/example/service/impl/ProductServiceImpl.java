@@ -14,8 +14,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
     @Autowired
     private ProductDao productDao;
 
-    public List<Product> selectAll(){
-        List<Product> products = productDao.selectAll();
+    public List<Product> selectAllAndDeleted(){
+        List<Product> products = productDao.selectAllAndDeleted();
 
         return products;
     }

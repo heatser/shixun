@@ -6,6 +6,7 @@ import com.example.domain.InOrder;
 import com.example.domain.OutOrder;
 import com.example.domain.Result;
 import com.example.service.InOrderService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +23,24 @@ public class InOrderController {
 
     @GetMapping
     public Result selectAll(){
-        List<InOrder> list = inOrderService.selectAll();
+        List<InOrder> list = inOrderService.list(null);
         int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
         String msg = list != null ? "" : "ERROR";
         return new Result(code, list, msg);
 
     }
+
+
+    @GetMapping("{id}")
+    public Result selectById(@PathVariable int id){
+        InOrder inOrder = inOrderService.selectById(id);
+        int code = inOrder != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = inOrder != null ? "" : "ERROR";
+        return new Result(code, inOrder, msg);
+
+    }
+
+
 
     @GetMapping("/store/{store}")
     public Result selectByStore(@PathVariable String store){
@@ -66,7 +79,7 @@ public class InOrderController {
         return new Result(code, flag, msg);
     }
 
-    @PutMapping("{id}")
+    @DeleteMapping("/{id}")
     public Result delete(@PathVariable int id){
         boolean flag = inOrderService.removeById(id);
         int code = flag != false ? Code.DELETE_OK : Code.DELETE_ERR;

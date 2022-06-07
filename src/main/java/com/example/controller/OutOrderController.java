@@ -24,7 +24,7 @@ public class OutOrderController {
 
     @GetMapping
     public Result selectAll(){
-        List<OutOrder> list = outOrderService.selectAll();
+        List<OutOrder> list = outOrderService.list(null);
         int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
         String msg = list != null ? "" : "ERROR";
         return new Result(code, list, msg);

@@ -20,7 +20,6 @@ public class InOrder {
     private String origin;
     private String remarks;
     @TableLogic(value = "0",delval = "1")
-    @TableField(select = false)
     private int deleted;
 
 

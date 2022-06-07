@@ -12,5 +12,5 @@ import java.util.List;
 public interface ProductDao extends BaseMapper<Product> {
 
     @Select("select * from product ")
-    public List<Product> selectAll();
+    public List<Product> selectAllAndDeleted();
 }
