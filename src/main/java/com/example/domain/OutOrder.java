@@ -18,7 +18,6 @@ public class OutOrder {
     private Date date;
     private String role;
     private String origin;
-    private int proid;
     private String remarks;
     @TableLogic(value = "0",delval = "1")
     @TableField(select = false)

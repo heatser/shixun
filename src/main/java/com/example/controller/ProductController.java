@@ -43,6 +43,7 @@ public class ProductController {
     }
 
     @PutMapping("{id}")
+
     public Result delete(@PathVariable int id){
         boolean flag = productService.removeById(id);
         int code = flag != false ? Code.SAVE_OK : Code.SAVE_ERR;

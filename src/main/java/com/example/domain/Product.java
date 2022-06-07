@@ -13,6 +13,8 @@ public class Product {
     private String color;
     private String size;
     private String amount;
+    private int orderid;
+    private int type;
     @TableLogic(value = "0",delval = "1")
     @TableField(select = false)
     private String deleted;

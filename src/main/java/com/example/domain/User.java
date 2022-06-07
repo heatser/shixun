@@ -16,7 +16,6 @@ public class User {
     private String password;
     private String username;
     private String role;
-    private int status;
     @TableLogic(value = "0",delval = "1")
     @TableField(select = false)
     private int deleted;

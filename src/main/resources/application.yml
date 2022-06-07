@@ -13,6 +13,10 @@ spring:
     host: smtp.163.com
     username: a1361422853@163.com
     password: XEPRIIEXYAKCTMNT
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
 
 
 management:
@@ -30,7 +34,6 @@ info:
   appName: 服装管理系统
   version: 1.0.0
   author: wu and luo
-
 
 
 server:
