@@ -44,11 +44,14 @@ public class InOrderController {
     }
 
 
-    @GetMapping("/condition")
+    @PostMapping("/condition")
     public Result selectByCondition(@RequestBody InOrder inOrder){
+//        InOrder inOrder = null;
+//        inOrder.setNo("in1");
+//        inOrder.setStore("一");
         List<InOrder> list = inOrderService.selectByCondition(inOrder);
         int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
+        String msg = list != null ? "" : "++++++++++++";
         System.out.println("++++++++++++");
         return new Result(code, list, msg);
     }
@@ -104,7 +107,7 @@ public class InOrderController {
     public Result update(@RequestBody InOrder inOrder)
     {
         boolean flag = inOrderService.updateById(inOrder);
-        int code = flag != false ? Code.DELETE_OK : Code.DELETE_ERR;
+        int code = flag != false ? Code.UPDATE_OK : Code.UPDATE_OK;
         String msg = flag != false ? "" : "ERROR";
         return new Result(code, flag, msg);
     }
