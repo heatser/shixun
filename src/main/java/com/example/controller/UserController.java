@@ -22,11 +22,12 @@ public class UserController {
     private UserService userService;
 
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     //登录，根据用户账户与密码查询数据库
     public Result login(@RequestBody User user) {
 
         User login = userService.login(user);
+        System.out.println(login);
         int code = login != null ? Code.SELECT_OK : Code.SELECT_ERR;
         String msg = login != null ? "" : "ERROR";
 
@@ -35,10 +36,16 @@ public class UserController {
 
     @GetMapping("/userid")
     public Result userid(){
-        String logininfo = userService.logininfo();
-        int code = logininfo != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = logininfo != null ? "" : "ERROR";
-        return new Result(code, logininfo, msg);
+        int logininfo = Integer.parseInt(userService.logininfo());
+
+
+        System.out.println(logininfo);
+
+        User user = userService.selectById(logininfo);
+
+        int code = user != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = user != null ? "" : "ERROR";
+        return new Result(code, user, msg);
     }
 
 

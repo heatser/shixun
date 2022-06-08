@@ -25,6 +25,11 @@ public class ProductController {
         return new Result(code, list, msg);
     }
 
+    @GetMapping("/out")
+    public Result selectOut(){
+        return null;
+    }
+
     @PostMapping
     public Result save(@RequestBody Product product){
         boolean flag = productService.save(product);

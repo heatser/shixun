@@ -32,6 +32,7 @@
 
     <div class="content-header">
 
+
         <!--        <el-button type="primary" round>主要按钮</el-button>-->
         <!--        <el-button type="primary" round>主要按钮</el-button>-->
         <!--        <el-button type="primary" round>主要按钮</el-button>-->
@@ -39,23 +40,33 @@
 
 
         <el-menu
-                :default-active="activeIndex2"
+                :default-active="activ1"
                 class="el-menu-demo"
                 mode="horizontal"
-                @select="handleSelect"
+                data="username"
                 background-color="#545c64"
                 text-color="#fff"
                 active-text-color="#ffd04b">
             <el-menu-item index="1"><a href="http://localhost:8081/pages/user.html">用户管理</a></el-menu-item>
             <el-submenu index="2">
                 <template slot="title">明细管理</template>
-                <el-menu-item index="2-1"><a href="http://localhost:8081/pages/outproduct.html" >出库明细</a></el-menu-item>
-                <el-menu-item index="2-2"><a href="http://localhost:8081/pages/inproduct.html" >入库明细</a></el-menu-item>
-                <!--                <el-menu-item index="2-3">选项3</el-menu-item>-->
+                <el-menu-item index="2-1"><a href="http://localhost:8081/pages/outproduct.html">出库明细</a></el-menu-item>
+                <el-menu-item index="2-2"><a href="http://localhost:8081/pages/inproduct.html">入库明细</a></el-menu-item>
             </el-submenu>
-            <el-menu-item index="3" ><a href="http://localhost:8081/pages/outorder.html" >入库单管理</a></el-menu-item>
-            <el-menu-item index="4"><a href="http://localhost:8081/pages/inorder.html" >出库单管理</a></el-menu-item>
+            <el-menu-item index="3"><a href="http://localhost:8081/pages/inorder.html">入库单管理</a></el-menu-item>
+            <el-menu-item index="4"><a href="http://localhost:8081/pages/outorder.html">出库单管理</a></el-menu-item>
+<!--            <el-menu-item index="5" disable style=" font-size: 15px; ">{{username.name}}</el-menu-item>-->
+            <el-submenu index="5">
+                <template slot="title" style=" font-size: 15px; ">{{username.name}}</template>
+                <el-menu-item index="5-1"><a href="http://localhost:8081/pages/outproduct.html">修改密码</a></el-menu-item>
+                <el-menu-item index="5-2"><a href="http://localhost:8081/pages/inproduct.html">个人中心</a></el-menu-item>
+                <el-menu-item index="5-3"><a href="http://localhost:8081/pages/inproduct.html">退出</a></el-menu-item>
+            </el-submenu>
+
+            <!--            <i  style="font-size:20px;margin-bottom: 30px; text-align: right;" class="el-icon-user-solid">管理员</i>-->
+
         </el-menu>
+
 
     </div>
 
@@ -296,11 +307,12 @@
         el: '#app',
         data: {
             pagination: {},
+            activ1: "4",
+            username: {},
             dataList: [],//当前页要展示的列表数据
             formData: {},//表单数据
             dialogFormVisible: false,//控制表单是否可见
-            inorder: {
-            },
+            inorder: {},
             dialogFormVisible4Edit: false,//编辑表单是否可见
             rules: {//校验规则
                 store: [{required: true, message: '所出仓库为必填项', trigger: 'blur'}],
@@ -313,6 +325,7 @@
         //钩子函数，VUE对象初始化完成后自动执行
         created() {
             this.getAll();
+            this.getUserInfo();
         },
 
         methods: {
@@ -337,6 +350,15 @@
                     }
                 );
             },
+
+            getUserInfo() {
+
+                axios.get("/user/userid").then((res) => {
+                    this.username = res.data.data;
+                })
+
+            },
+
 
             //弹出添加窗口
             handleCreate() {

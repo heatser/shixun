@@ -33,10 +33,9 @@
     <div class="content-header">
 
         <el-menu
-                :default-active="activeIndex2"
+                :default-active="activ1"
                 class="el-menu-demo"
                 mode="horizontal"
-                @select="handleSelect"
                 background-color="#545c64"
                 text-color="#fff"
                 active-text-color="#ffd04b">
@@ -283,6 +282,7 @@
         el: '#app',
         data: {
             pagination: {},
+            activ1: "1",
             dataList: [],//当前页要展示的列表数据
             formData: {},//表单数据
             dialogFormVisible: false,//控制表单是否可见

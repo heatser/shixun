@@ -33,24 +33,23 @@
     <div class="content-header">
 
         <el-menu
-                :default-active="activeIndex"
+                :default-active="activ1"
                 class="el-menu-demo"
                 mode="horizontal"
-                @select="handleSelect"
                 background-color="#545c64"
                 text-color="#fff"
                 active-text-color="#ffd04b"
                 router="true"
         >
-            <el-menu-item index="/user"><a href="http://localhost:8081/pages/user.html">用户管理</a></el-menu-item>
+            <el-menu-item index="1"><a href="http://localhost:8081/pages/user.html">用户管理</a></el-menu-item>
             <el-submenu index="2">
                 <template slot="title">明细管理</template>
-                <el-menu-item index="/outproduct"><a href="http://localhost:8081/pages/outproduct.html" >出库明细</a></el-menu-item>
-                <el-menu-item index="/inproduct"><a href="http://localhost:8081/pages/inproduct.html" >入库明细</a></el-menu-item>
+                <el-menu-item index="2-1"><a href="http://localhost:8081/pages/outproduct.html" >出库明细</a></el-menu-item>
+                <el-menu-item index="2-2"><a href="http://localhost:8081/pages/inproduct.html" >入库明细</a></el-menu-item>
                 <!--                <el-menu-item index="2-3">选项3</el-menu-item>-->
             </el-submenu>
-            <el-menu-item index="/inorder" ><a href="http://localhost:8081/pages/inorder.html" >入库单管理</a></el-menu-item>
-            <el-menu-item index="/outorder" ><a href="http://localhost:8081/pages/outorder.html" >出库单管理</a></el-menu-item>
+            <el-menu-item index="3" ><a href="http://localhost:8081/pages/inorder.html" >入库单管理</a></el-menu-item>
+            <el-menu-item index="4" ><a href="http://localhost:8081/pages/outorder.html" >出库单管理</a></el-menu-item>
         </el-menu>
 
     </div>
@@ -290,6 +289,7 @@
         el: '#app',
         data: {
             pagination: {},
+            activ1: "2-2",
             dataList: [],//当前页要展示的列表数据
             formData: {},//表单数据
             dialogFormVisible: false,//控制表单是否可见

@@ -14,7 +14,7 @@ public class Product {
     private String size;
     private String amount;
     private int orderid;
-    private int type;
+    private String type;
     @TableLogic(value = "0",delval = "1")
     @TableField(select = false)
     private String deleted;
