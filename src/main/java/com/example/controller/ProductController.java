@@ -25,9 +25,37 @@ public class ProductController {
         return new Result(code, list, msg);
     }
 
+    @GetMapping("{id}")
+    public Result selectById(@PathVariable int id){
+        Product product = productService.getById(id);
+        int code = product != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = product != null ? "" : "ERROR";
+        return new Result(code, product, msg);
+    }
+
+
     @GetMapping("/out")
     public Result selectOut(){
-        return null;
+        List<Product> list = productService.selectOut();
+        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = list != null ? "" : "ERROR";
+        return new Result(code, list, msg);
+    }
+
+    @GetMapping("/in")
+    public Result selectIn(){
+        List<Product> list = productService.selectIn();
+        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = list != null ? "" : "ERROR";
+        return new Result(code, list, msg);
+    }
+
+    @PostMapping("/condition")
+    public Result selectByCondition(@RequestBody Product product){
+        List<Product> list = productService.selectByCondition(product);
+        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = list != null ? "" : "ERROR";
+        return new Result(code, list, msg);
     }
 
     @PostMapping
@@ -47,11 +75,11 @@ public class ProductController {
         return new Result(code, flag, msg);
     }
 
-    @PutMapping("{id}")
+    @DeleteMapping("{id}")
 
     public Result delete(@PathVariable int id){
         boolean flag = productService.removeById(id);
-        int code = flag != false ? Code.SAVE_OK : Code.SAVE_ERR;
+        int code = flag != false ? Code.DELETE_OK : Code.DELETE_ERR;
         String msg = flag != false ? "" : "ERROR";
         return new Result(code, flag, msg);
     }

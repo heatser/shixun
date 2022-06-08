@@ -292,7 +292,9 @@
             activ1: "2-1",
             username: {},
             dataList: [],//当前页要展示的列表数据
-            formData: {},//表单数据
+            formData: {
+                type: "1"
+            },//表单数据
             dialogFormVisible: false,//控制表单是否可见
             inorder: {},
             dialogFormVisible4Edit: false,//编辑表单是否可见
@@ -312,7 +314,7 @@
             //列表
             getAll() {
                 //发送ajax请求
-                axios.get("/outorder").then((res) => {
+                axios.get("/product/out").then((res) => {
                     this.dataList = res.data.data;
                 });
             },
@@ -320,7 +322,7 @@
 
             getByCondition() {
                 //发送ajax请求
-                axios.post("/outorder/condition", this.formData).then((res) => {
+                axios.post("/product/condition", this.formData).then((res) => {
                         if (res.data.code == 20041) {
                             //展示弹层，加载数据
                             this.dataList = res.data.data;
@@ -374,8 +376,8 @@
             handleUpdate(row) {
                 console.log(row);   //row.id 查询条件
                 //查询数据，根据id查询
-                axios.get("/outorder/" + row.id).then((res) => {
-                    // console.log(res.data.data);
+                axios.get("/product/" + row.id).then((res) => {
+                    console.log(res.data.data);
                     if (res.data.code == 20041) {
                         //展示弹层，加载数据
                         this.formData = res.data.data;
@@ -389,12 +391,12 @@
             //编辑
             handleEdit() {
                 //发送ajax请求
-                axios.put("/outorder", this.formData).then((res) => {
+                axios.put("/product", this.formData).then((res) => {
                     //如果操作成功，关闭弹层，显示数据
-                    if (res.data.code == 20031) {
+                    if (res.data.code == 20011) {
                         this.dialogFormVisible4Edit = false;
                         this.$message.success("修改成功");
-                    } else if (res.data.code == 20030) {
+                    } else if (res.data.code == 20010) {
                         this.$message.error("修改失败");
                     } else {
                         this.$message.error(res.data.msg);
@@ -411,7 +413,7 @@
                     type: 'info'
                 }).then(() => {
                     //2.做删除业务
-                    axios.delete("/outorder/" + row.id).then((res) => {
+                    axios.delete("/product/" + row.id).then((res) => {
                         if (res.data.code == 20021) {
                             this.$message.success("删除成功");
                         } else {

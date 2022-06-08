@@ -11,6 +11,12 @@ public interface ProductService extends IService<Product> {
 
     public List<Product> selectAllAndDeleted();
 
+    public List<Product> selectOut();
+
+    public List<Product> selectIn();
+
+    public List<Product> selectByCondition(Product product);
+
 
 
 
