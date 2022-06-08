@@ -1,8 +1,6 @@
 package com.example.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.api.R;
 import com.example.domain.Code;
 import com.example.domain.Result;
 import com.example.domain.User;
@@ -18,6 +16,8 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
+
+
     @Autowired
     private UserService userService;
 
@@ -32,6 +32,17 @@ public class UserController {
 
         return new Result(code, login, msg);
     }
+
+    @GetMapping("/userid")
+    public Result userid(){
+        String logininfo = userService.logininfo();
+        int code = logininfo != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = logininfo != null ? "" : "ERROR";
+        return new Result(code, logininfo, msg);
+    }
+
+
+
 
     @GetMapping("email/{email}")
     public Result loginByEmail(@PathVariable String email) {
@@ -126,7 +137,6 @@ public class UserController {
         boolean flag = userService.save(user);
         int code = flag != false ? Code.SAVE_OK : Code.SAVE_ERR;
         String msg = flag != false ? "" : "ERROR";
-
         return new Result(code, flag, msg);
     }
 

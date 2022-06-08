@@ -23,4 +23,6 @@ public interface UserService extends IService<User> {
 
     public List<User> selectByCondition(User user);
 
+    public String logininfo();
+
 }

@@ -37,13 +37,29 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     public User login(User user) {
         User user1 = userDao.login(user);
+
+        if(user1.getId()>0)
+        {
+            String userid = "userid";
+            String id = String.valueOf(user1.getId());
+
+            jetCache.put(userid,id);
+        }
+
         return user1;
 
+    }
+
+    public String logininfo(){
+        String userid = "userid";
+        String id = jetCache.get(userid);
+        return id;
     }
 
 
     public String loginByEmail(String email){
         String checkcode = codeUtils.generator(email);
+
         jetCache.put(email,checkcode);
         sendMail.sendMail(checkcode);
         return checkcode;
