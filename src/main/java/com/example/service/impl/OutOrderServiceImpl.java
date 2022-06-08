@@ -48,5 +48,23 @@ public class OutOrderServiceImpl extends ServiceImpl<OutOrderDao, OutOrder> impl
     }
 
 
+    public List<OutOrder> selectByCondition(OutOrder outOrder){
+
+        LambdaQueryWrapper<OutOrder> lqw = new LambdaQueryWrapper<OutOrder>();
+        if(outOrder.getNo() != null)
+        {
+            lqw.like(OutOrder::getNo, outOrder.getNo());
+        }
+        if(outOrder.getStore() != null)
+        {
+            lqw.like(OutOrder::getStore, outOrder.getStore());
+        }
+
+        List<OutOrder> outOrders = outOrderDao.selectList(lqw);
+
+        return outOrders;
+    }
+
+
 
 }

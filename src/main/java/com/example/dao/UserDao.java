@@ -8,8 +8,8 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserDao extends BaseMapper<User> {
 
-    @Select("select id from user where username=#{username} AND password=#{password}  ")
-    public boolean login(User user);
+    @Select("select * from user where username=#{username} AND password=#{password}  ")
+    public User login(User user);
 
 
 

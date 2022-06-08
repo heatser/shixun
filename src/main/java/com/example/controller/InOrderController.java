@@ -46,13 +46,9 @@ public class InOrderController {
 
     @PostMapping("/condition")
     public Result selectByCondition(@RequestBody InOrder inOrder){
-//        InOrder inOrder = null;
-//        inOrder.setNo("in1");
-//        inOrder.setStore("一");
         List<InOrder> list = inOrderService.selectByCondition(inOrder);
         int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "++++++++++++";
-        System.out.println("++++++++++++");
+        String msg = list != null ? "" : "ERROR";
         return new Result(code, list, msg);
     }
 

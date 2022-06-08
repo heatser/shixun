@@ -26,12 +26,11 @@ public class UserController {
     //登录，根据用户账户与密码查询数据库
     public Result login(@RequestBody User user) {
 
-        boolean flag = userService.login(user);
-        System.out.println(flag);
-        int code = flag != false ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = flag != false ? "" : "ERROR";
+        User login = userService.login(user);
+        int code = login != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = login != null ? "" : "ERROR";
 
-        return new Result(code, flag, msg);
+        return new Result(code, login, msg);
     }
 
     @GetMapping("email/{email}")
@@ -59,6 +58,16 @@ public class UserController {
         String msg = list != null ? "" : "ERROR";
         return new Result(code, list, msg);
     }
+
+    @PostMapping("/condition")
+    public Result selectByCondition(@RequestBody User user){
+        List<User> list = userService.selectByCondition(user);
+        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = list != null ? "" : "ERROR";
+        return new Result(code, list, msg);
+    }
+
+
 
 
     @GetMapping("/name/{name}")
@@ -101,7 +110,7 @@ public class UserController {
         return new Result(code, flag, msg);
     }
 
-    @PutMapping("/{id}")
+    @DeleteMapping("/{id}")
     //逻辑删除
     public Result delete(@PathVariable int id) {
         boolean flag = userService.removeById(id);

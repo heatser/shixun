@@ -3,6 +3,7 @@ package com.example.controller;
 
 import com.baomidou.mybatisplus.extension.api.R;
 import com.example.domain.Code;
+import com.example.domain.InOrder;
 import com.example.domain.OutOrder;
 import com.example.domain.Result;
 import com.example.service.OutOrderService;
@@ -49,6 +50,24 @@ public class OutOrderController {
 
     }
 
+    @GetMapping("{id}")
+    public Result selectById(@PathVariable int id){
+        OutOrder outOrder = outOrderService.getById(id);
+        int code = outOrder != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = outOrder != null ? "" : "ERROR";
+        return new Result(code, outOrder, msg);
+
+    }
+
+
+    @PostMapping("/condition")
+    public Result selectByCondition(@RequestBody OutOrder outOrder){
+        List<OutOrder> list = outOrderService.selectByCondition(outOrder);
+        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = list != null ? "" : "ERROR";
+        return new Result(code, list, msg);
+    }
+
     @GetMapping("/no/{no}")
     public Result selectByNo(@PathVariable String no){
         List<OutOrder> list = outOrderService.selectByNo(no);
@@ -80,7 +99,7 @@ public class OutOrderController {
     public Result update(@RequestBody OutOrder outOrder)
     {
         boolean flag = outOrderService.updateById(outOrder);
-        int code = flag != false ? Code.DELETE_OK : Code.DELETE_ERR;
+        int code = flag != false ? Code.UPDATE_OK : Code.UPDATE_ERR;
         String msg = flag != false ? "" : "ERROR";
         return new Result(code, flag, msg);
     }

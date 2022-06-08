@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dao.UserDao;
 import com.example.domain.Code;
+import com.example.domain.OutOrder;
 import com.example.domain.User;
 import com.example.service.UserService;
 import com.example.utils.CodeUtils;
@@ -34,12 +35,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     private Cache<String ,String> jetCache;
 
 
-    public boolean login(User user) {
-        boolean login = userDao.login(user);
-        if (login == false) {
-            System.out.println("11");
-        }
-        return true;
+    public User login(User user) {
+        User user1 = userDao.login(user);
+        return user1;
+
     }
 
 
@@ -77,6 +76,25 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         List<User> users = userDao.selectList(lqw);
         return users;
 
+    }
+
+
+
+    public List<User> selectByCondition(User user){
+
+        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
+        if(user.getName() != null)
+        {
+            lqw.like(User::getName, user.getName());
+        }
+        if(user.getUsername() != null)
+        {
+            lqw.like(User::getUsername, user.getUsername());
+        }
+
+        List<User> users = userDao.selectList(lqw);
+
+        return users;
     }
 
 }

@@ -18,4 +18,6 @@ public interface OutOrderService extends IService<OutOrder> {
 
     public List<OutOrder> selectByNo(String no);
 
+    public List<OutOrder> selectByCondition(OutOrder outOrder);
+
 }
