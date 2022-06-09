@@ -18,6 +18,8 @@ public class StoreController {
     @Autowired
     private StoreService storeService;
 
+
+
     @PutMapping("/product")
     public Result changeAmountByProduct(@RequestBody Product product){
         boolean flag = storeService.changeAmountByProduct(product);
@@ -34,6 +36,14 @@ public class StoreController {
         return new Result(code, list, msg);
     }
 
+    @PostMapping("/condition")
+    public Result selectByCondition(@RequestBody Store store){
+        List<Store> list = storeService.selectByCondition(store);
+        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = list != null ? "" : "ERROR";
+        return new Result(code, list, msg);
+    }
+
     @PutMapping
     public Result update(@RequestBody Store store){
         boolean flag = storeService.updateById(store);
@@ -45,7 +55,9 @@ public class StoreController {
     @PostMapping
     public Result sava(@RequestBody Store store){
         boolean flag = storeService.save(store);
-        int code = flag != false ? Code.UPDATE_OK : Code.UPDATE_OK;
+
+
+        int code = flag != false ? Code.SAVE_OK : Code.SAVE_ERR;
         String msg = flag != false ? "" : "ERROR";
         return new Result(code, flag, msg);
     }

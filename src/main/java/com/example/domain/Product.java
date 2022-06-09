@@ -7,7 +7,7 @@ import lombok.Data;
 @TableName("product")
 public class Product {
     @TableId(type = IdType.AUTO)
-    private String id;
+    private int id;
     private String no;
     private String name;
     private String color;
