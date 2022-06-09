@@ -9,4 +9,10 @@ import org.apache.ibatis.annotations.Select;
 public interface StoreDao extends BaseMapper<Store> {
 
 
+
+    @Select("select amount from store where id=#{id}")
+    public int selectAmountById(int id);
+
+
+
 }

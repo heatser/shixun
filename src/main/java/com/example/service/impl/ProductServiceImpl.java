@@ -3,7 +3,6 @@ package com.example.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dao.ProductDao;
-import com.example.domain.OutOrder;
 import com.example.domain.Product;
 import com.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +42,13 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
 
         lqw.eq(Product::getType,product.getType());
 
+
+        int orderid = product.getOrderid();
+        if(orderid!=0)
+        {
+            lqw.eq(Product::getOrderid,product.getOrderid());
+        }
+
         if(product.getNo()!=null)
         {
             lqw.like(Product::getNo,product.getNo());
@@ -60,6 +66,5 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
 
         return products;
     }
-
 
 }

@@ -12,8 +12,9 @@ public class Product {
     private String name;
     private String color;
     private String size;
-    private String amount;
+    private int amount;
     private int orderid;
+    private int storeid;
     private String type;
     @TableLogic(value = "0",delval = "1")
     @TableField(select = false)
