@@ -103,7 +103,7 @@ public class ProductController {
         }
 
 
-        boolean flag1 = storeService.changeAmountByProductIdANDAmount(product.getId(), amount1);
+        boolean flag1 = storeService.changeAmountByProductIdANDAmount(product.getStoreid(), amount1);
         if(flag1=true)
         {
             flag = productService.updateById(product);

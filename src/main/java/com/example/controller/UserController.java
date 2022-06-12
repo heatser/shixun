@@ -2,6 +2,7 @@ package com.example.controller;
 
 
 import com.example.domain.Code;
+import com.example.domain.Login;
 import com.example.domain.Result;
 import com.example.domain.User;
 import com.example.service.UserService;
@@ -49,19 +50,17 @@ public class UserController {
     }
 
 
-
-
-    @GetMapping("email/{email}")
-    public Result loginByEmail(@PathVariable String email) {
-        String trueCode = userService.loginByEmail(email);
+    @PostMapping("/email")
+    public Result loginByEmail(@RequestBody Login login) {
+        String trueCode = userService.loginByEmail(login.getEmail());
         int code = trueCode != null ? Code.SELECT_OK : Code.SELECT_ERR;
         String msg = trueCode != null ? "" : "ERROR";
         return new Result(code, trueCode, msg);
     }
 
-    @PostMapping("/{email}/{checkcode}")
-    public Result checkCode(@PathVariable String email,@PathVariable String checkcode) {
-        boolean flag = userService.checkCode(email, checkcode);
+    @PostMapping("/checkcode")
+    public Result checkCode(@RequestBody Login login) {
+        boolean flag = userService.checkCode(login.getEmail(), login.getCheckcode());
         int code = flag != false ? Code.SELECT_OK : Code.SELECT_ERR;
         String msg = flag != false ? "" : "ERROR";
         return new Result(code, flag, msg);
@@ -84,8 +83,6 @@ public class UserController {
         String msg = list != null ? "" : "ERROR";
         return new Result(code, list, msg);
     }
-
-
 
 
     @GetMapping("/name/{name}")
@@ -127,6 +124,8 @@ public class UserController {
 
         return new Result(code, flag, msg);
     }
+
+
 
     @DeleteMapping("/{id}")
     //逻辑删除

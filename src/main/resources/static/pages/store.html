@@ -51,9 +51,8 @@
 
       <el-submenu index="6">
         <template slot="title" style=" font-size: 15px; ">{{username.name}}</template>
-        <el-menu-item index="6-1"><a href="http://localhost:8081/pages/outproduct.html">修改密码</a></el-menu-item>
-        <el-menu-item index="6-2"><a href="http://localhost:8081/pages/inproduct.html">个人中心</a></el-menu-item>
-        <el-menu-item index="6-3"><a href="http://localhost:8081/pages/login.html">退出</a></el-menu-item>
+        <el-menu-item index="6-1"><a href="http://localhost:8081/pages/usercenter.html">个人中心</a></el-menu-item>
+        <el-menu-item index="6-2"><a href="http://localhost:8081/pages/login.html">退出</a></el-menu-item>
       </el-submenu>
 
 
@@ -108,6 +107,7 @@
 
         <el-table-column label="操作"  align="center">
 
+
           <template slot-scope="scope">
 
             <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
@@ -117,6 +117,23 @@
         </el-table-column>
 
       </el-table>
+
+
+      <el-pagination>
+
+<!--              @size-change="handleSizeChange" @current-change="handleCurrentChange"-->
+                     :current-page="1" :page-sizes="[1, 2, 5, 10]"
+                     :page-size="5" :total="total"
+                     layout="total, sizes, prev, pager, next, jumper">
+      </el-pagination>
+
+
+
+<!--      <el-pagination-->
+<!--              small ="true"-->
+<!--              layout="prev, pager, next"-->
+<!--              :total="13">-->
+<!--      </el-pagination>-->
 
 
 
@@ -275,7 +292,7 @@
     el: '#app',
     data: {
       pagination: {},
-      activ1: "2-2",
+      activ1: "5",
       username: {},
       dataList: [],//当前页要展示的列表数据
       formData: {

@@ -1,0 +1,102 @@
+<el-table :data="userlist" border stripe>
+    <el-table-column type="index"></el-table-column>
+    <el-table-column label="姓名" prop="username"></el-table-column>
+    <el-table-column label="邮箱" prop="email"></el-table-column>
+    <el-table-column label="电话" prop="mobile"></el-table-column>
+    <el-table-column label="⾓⾊" prop="role_name"></el-table-column>
+    <el-table-column label="状态" prop="mg_state">
+        <!--插槽--><!-- scope.row：获取到该⾏的数据对象-->
+        <template slot-scope="scope">
+            <!--开关状态--><!-- change 事件：当开关状态发⽣变化时触发-->
+            <el-switch v-model="scope.row.mg_state" @change="userStateChanged(scope.row)"></el-switch>
+        </template>
+    </el-table-column>
+    <el-table-column label="操作" width="180px">
+        <!--插槽-->
+        <template slot-scope="scope">
+            <!--修改按钮-->
+            <el-button @click="showEditDialog(scope.row.id)" type="primary" icon="el-icon-edit" size="mini"></el-button>
+            <!--删除按钮-->
+            <el-button @click="removeUserById(scope.row.id)" type="danger" icon="el-icon-delete"
+                       size="mini"></el-button>
+            <!--分配⾓⾊按钮-->
+            <el-tooltip effect="dark" content="分配⾓⾊" placement="top" :enterable="false">
+                <el-button @click="setRole(scope.row)" type="warning" icon="el-icon-setting" size="mini"></el-button>
+            </el-tooltip>
+        </template>
+    </el-table-column>
+</el-table>
+<!--分页模块-->
+<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+               :current-page="queryInfo.pagenum" :page-sizes="[1, 2, 5, 10]"
+               :page-size="queryInfo.pagesize" :total="total"
+               layout="total, sizes, prev, pager, next, jumper">
+</el-pagination>
+
+
+exportdefault{
+data(){
+return{
+获取⽤户列表的参数对象
+//
+queryInfo:{
+query:'',
+当前的页数
+//
+pagenum:1,
+当前每页显⽰多少条数据
+//
+pagesize:2
+},
+total:0,
+userlist:[]
+}
+},
+methods:{
+获取⽤户信息
+//
+asyncgetUserList(){
+const{ data: res }=awaitthis.$http.get('users',{ params:this.queryInfo })
+if(res.meta.status !==200){
+returnthis.$message.error('获取⽤户列表失败')
+}
+this.userlist = res.data.users
+this.total = res.data.total
+},
+监听
+改变的事件
+//
+pagesize
+handleSizeChange(newSize){
+同步修改
+中的
+//
+data
+pagesize
+this.queryInfo.pagesize = newSize
+重新发起数据请求
+//
+this.getUserList()
+},
+监听页码值改变的事件
+//
+handleCurrentChange(newPage){
+this.queryInfo.pagenum = newPage
+this.getUserList()
+},
+监听
+开关状态的改变
+//
+switch
+asyncuserStateChanged(userinfo){
+console.log(userinfo)
+const{ data: res }=awaitthis.$http.put(
+`users/${userinfo.id}/state/${userinfo.mg_state}`
+)
+if(res.meta.status !==200){
+userinfo.mg_state =!userinfo.mg_state
+returnthis.$message.error('更新⽤户状态失败！')
+}
+this.$message.success('更新⽤户状态成功！')
+}
+}
