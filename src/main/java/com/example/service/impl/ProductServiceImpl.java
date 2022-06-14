@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dao.ProductDao;
+import com.example.dao.StoreDao;
 import com.example.domain.PageResult;
 import com.example.domain.Product;
 import com.example.domain.Store;
@@ -19,6 +20,9 @@ import java.util.List;
 public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> implements ProductService {
     @Autowired
     private ProductDao productDao;
+
+    @Autowired
+    private StoreDao storeDao;
 
     public List<Product> selectAllAndDeleted(){
         List<Product> products = productDao.selectAllAndDeleted();
@@ -118,6 +122,58 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
         pageResult.setProductrows(rows);
 
         return  pageResult;
+    }
+
+    @Override
+    public boolean save(Product product) {
+
+        Store store = storeDao.selectById(product.getStoreid());
+        if(product.getName()==null){
+            product.setName(store.getName());
+            product.setColor(store.getColor());
+            product.setSize(store.getSize());
+        }
+
+        String in = "in";
+        String out = "out";
+        String storeno = store.getNo();
+        String nowTime = String.valueOf(System.currentTimeMillis());
+
+
+        if(product.getType().equals(0)){
+            String no = in + storeno + nowTime;
+            product.setNo(no);
+        }else {
+            String no = out + storeno + nowTime;
+            product.setNo(no);
+        }
+
+        productDao.insert(product);
+        return true;
+    }
+
+    @Override
+    public boolean changeno(int id) {
+        Product product = productDao.selectById(id);
+        Store store = storeDao.selectById(product.getStoreid());
+
+        String in = "in";
+        String out = "out";
+        String storeno = store.getNo();
+        String nowTime = String.valueOf(System.currentTimeMillis());
+
+
+        if(product.getType().equals(0)){
+            String no = in + storeno + nowTime;
+            product.setNo(no);
+        }else {
+            String no = out + storeno + nowTime;
+            product.setNo(no);
+        }
+
+        productDao.updateById(product);
+
+        return true;
     }
 
 }

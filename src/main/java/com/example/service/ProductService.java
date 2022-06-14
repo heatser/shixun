@@ -20,6 +20,10 @@ public interface ProductService extends IService<Product> {
 
     public PageResult selectPage(PageResult pageResult);
 
+    public boolean save(Product product);
+
+    public boolean changeno(int id);
+
 
 
 }

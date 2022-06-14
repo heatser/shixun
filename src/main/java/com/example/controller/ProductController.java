@@ -75,7 +75,6 @@ public class ProductController {
 
         boolean flag1 = storeService.changeAmountByProduct(product);
         if (flag1 == true) {
-
             flag = productService.save(product);
             code = flag != false ? Code.SAVE_OK : Code.SAVE_ERR;
             msg = flag != false ? "" : "ERROR";
@@ -146,5 +145,19 @@ public class ProductController {
         int code = page != null ? Code.SELECT_OK : Code.SELECT_ERR;
         String msg = page != null ? "" : "ERROR";
         return new Result(code, page, msg);
+    }
+
+
+
+
+
+
+
+    @GetMapping("/no/{id}")
+    public Result changeNo(@PathVariable int id){
+        boolean flag = productService.changeno(id);
+        int code = flag != false ? Code.UPDATE_OK : Code.UPDATE_ERR;
+        String msg = flag != false ? "" : "ERROR";
+        return new Result(code, flag, msg);
     }
 }

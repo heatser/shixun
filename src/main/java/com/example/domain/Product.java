@@ -11,7 +11,7 @@ public class Product {
     private String no;
     private String name;
     private String color;
-    private String size;
+    private int size;
     private int amount;
     private int orderid;
     private int storeid;
