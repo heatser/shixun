@@ -116,6 +116,8 @@
                         <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
 
                         <el-button type="primary" size="mini" @click=" handleCreateProduct(scope.row)">新增明细</el-button>
+
+                        <el-button type="primary" size="mini" @click=" handlejump(scope.row)">明细详情</el-button>
                     </template>
 
                 </el-table-column>
@@ -437,6 +439,14 @@
             //重置表单
             resetForm() {
                 this.formData = {};
+            },
+
+
+            handlejump(row){
+                setTimeout(() => {
+                    location.href= "http://localhost:8081/pages/outproduct.html?inorder= "+row.id;
+                }, 1000)
+
             },
 
             //添加

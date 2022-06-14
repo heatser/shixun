@@ -37,8 +37,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @CreateCache(name = "jetCache", expire = 12000, cacheType = CacheType.BOTH)
     private Cache<String, String> jetCache;
 
-    @CreateCache(name = "jetCache", expire = 12000, cacheType = CacheType.BOTH)
-    private Cache<String, String> userCache;
 
     public User login(User user) {
 
@@ -47,7 +45,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         if (user1 != null) {
             String id = String.valueOf(user1.getId());
             String userid = "userid";
-            userCache.put(userid, id);
+            jetCache.put(userid, id);
         }
         return user1;
 
@@ -55,7 +53,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     public String logininfo() {
         String userid = "userid";
-        String id = userCache.get(userid);
+        String id = jetCache.get(userid);
         return id;
     }
 

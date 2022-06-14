@@ -58,7 +58,6 @@
             </el-submenu>
 
 
-
         </el-menu>
 
 
@@ -116,7 +115,7 @@
 
                 <el-table-column prop="storeid" label="商品号" align="center"></el-table-column>
 
-                <el-table-column label="操作"  align="center">
+                <el-table-column label="操作" align="center">
 
                     <template slot-scope="scope">
 
@@ -215,13 +214,15 @@
             pagination: {},
             activ1: "2-2",
             username: {},
+
             dataList: [],//当前页要展示的列表数据
             formData: {
                 type: "0"
             },//表单数据
             queryInfo: {
-                product:{
-                    type: "0"
+                product: {
+                    type: "0",
+                    orderid: ""
                 },
                 pagenum: 1,
                 pagesize: 5
@@ -238,15 +239,26 @@
 
         //钩子函数，VUE对象初始化完成后自动执行
         created() {
+            this.check();
             this.getUserList();
             this.getUserInfo();
         },
 
         methods: {
 
+            check() {
+                var url = location.search;
+                if (url.indexOf("?") != -1) { //判断是否有参数
+                    var str = url.substr(1); //从第一个字符开始 因为第0个是?号 获取所有除问号的所有符串
+                    strs = str.split("=%20"); //用等号进行分隔 (因为知道只有一个参数 所以直接用等号进分隔 如果有多个参数 要用&号分隔 再用等号进行分隔)
+                }
+                console.log(strs);
+                this.queryInfo.product.orderid = strs[1];
+            },
+
 
             getUserList() {
-                axios.post("/product/in/page",this.queryInfo).then((res) => {
+                axios.post("/product/in/page", this.queryInfo).then((res) => {
                     console.log(res.data);
                     this.dataList = res.data.data.productrows;
                     this.total = res.data.data.total;
@@ -356,6 +368,7 @@
                     this.$message.info("取消删除操作");
                 });
             }
+
         }
     })
 
