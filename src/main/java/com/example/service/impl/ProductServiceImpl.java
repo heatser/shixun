@@ -1,13 +1,18 @@
 package com.example.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dao.ProductDao;
+import com.example.domain.PageResult;
 import com.example.domain.Product;
+import com.example.domain.Store;
 import com.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -65,6 +70,54 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
         List<Product> products = productDao.selectList(lqw);
 
         return products;
+    }
+
+
+    @Override
+    public PageResult selectPage(PageResult pageResult) {
+
+        Product product = pageResult.product;
+
+        IPage page = new Page(pageResult.getPagenum(),pageResult.getPagesize());
+
+        LambdaQueryWrapper<Product> lqw = new LambdaQueryWrapper();
+
+        if(product != null){
+
+            int orderid = product.getOrderid();
+
+            lqw.eq(Product::getType,product.getType());
+
+            if(orderid!=0)
+            {
+                lqw.eq(Product::getOrderid,product.getOrderid());
+            }
+
+            if(product.getNo()!=null)
+            {
+                lqw.like(Product::getNo,product.getNo());
+            }
+            if(product.getColor()!=null)
+            {
+                lqw.like(Product::getColor,product.getColor());
+            }
+            if(product.getName()!=null)
+            {
+                lqw.like(Product::getName,product.getName());
+            }
+
+        }
+
+        IPage page1 = productDao.selectPage(page, lqw);
+
+        List<Product> rows = page.getRecords();
+
+        long total = page1.getTotal();
+
+        pageResult.setTotal(total);
+        pageResult.setProductrows(rows);
+
+        return  pageResult;
     }
 
 }

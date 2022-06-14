@@ -1,14 +1,18 @@
 package com.example.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dao.StoreDao;
+import com.example.domain.PageResult;
 import com.example.domain.Product;
 import com.example.domain.Store;
 import com.example.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -58,7 +62,9 @@ public class StoreServiceImpl extends ServiceImpl<StoreDao, Store> implements St
         {
             lqw.like(Store::getColor,store.getColor());
         }
+
         List<Store> list = storeDao.selectList(lqw);
+
         return list;
 
     }
@@ -75,6 +81,43 @@ public class StoreServiceImpl extends ServiceImpl<StoreDao, Store> implements St
         return true;
     }
 
+    @Override
+    public PageResult selectPage(PageResult pageResult) {
+
+        Store store = pageResult.store;
+
+        IPage page = new Page(pageResult.getPagenum(),pageResult.getPagesize());
+
+        LambdaQueryWrapper<Store> lqw = new LambdaQueryWrapper();
+
+        if(store != null){
+
+            if(store.getName()!=null)
+            {
+                lqw.like(Store::getName,store.getName());
+            }
+            if(store.getNo()!=null)
+            {
+                lqw.like(Store::getNo,store.getNo());
+            }
+            if(store.getColor()!=null)
+            {
+                lqw.like(Store::getColor,store.getColor());
+            }
+
+        }
+        IPage page1 = storeDao.selectPage(page, lqw);
+
+        List<Store> rows = page.getRecords();
+
+        long total = page1.getTotal();
+
+
+        pageResult.setTotal(total);
+        pageResult.setStorerows(rows);
+
+        return  pageResult;
+    }
 
 
 }

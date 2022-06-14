@@ -2,6 +2,7 @@ package com.example.controller;
 
 
 import com.example.domain.Code;
+import com.example.domain.PageResult;
 import com.example.domain.Product;
 import com.example.domain.Result;
 import com.example.service.ProductService;
@@ -122,5 +123,28 @@ public class ProductController {
         int code = flag != false ? Code.DELETE_OK : Code.DELETE_ERR;
         String msg = flag != false ? "" : "ERROR";
         return new Result(code, flag, msg);
+    }
+
+
+
+    @PostMapping("/in/page")
+    public Result selectInPage(@RequestBody PageResult pageResult) {
+
+        PageResult page = productService.selectPage(pageResult);
+
+        int code = page != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = page != null ? "" : "ERROR";
+        return new Result(code, page, msg);
+    }
+
+
+    @PostMapping("/out/page")
+    public Result selectOutPage(@RequestBody PageResult pageResult) {
+
+        PageResult page = productService.selectPage(pageResult);
+
+        int code = page != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = page != null ? "" : "ERROR";
+        return new Result(code, page, msg);
     }
 }

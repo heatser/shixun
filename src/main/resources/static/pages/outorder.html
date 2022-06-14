@@ -10,7 +10,7 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>出库</title>
+    <title>出库管理</title>
 
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
 
@@ -78,19 +78,19 @@
 
             <div class="filter-container">
 
-                <el-form :inline="true" :model="formData" class="demo-form-inline">
+                <el-form :inline="true" :model="queryInfo.outOrder" class="demo-form-inline">
 
 
                     <el-form-item label="仓库">
-                        <el-input v-model="formData.store" placeholder="仓库"></el-input>
+                        <el-input v-model="queryInfo.outOrder.store" placeholder="仓库"></el-input>
                     </el-form-item>
 
                     <el-form-item label="货号">
-                        <el-input v-model="formData.no" placeholder="单据编号"></el-input>
+                        <el-input v-model="queryInfo.outOrder.no" placeholder="单据编号"></el-input>
                     </el-form-item>
 
                     <el-form-item>
-                        <el-button type="primary" @click="getByCondition()">查询</el-button>
+                        <el-button type="primary" @click="getUserList">查询</el-button>
                     </el-form-item>
 
                     <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
@@ -108,7 +108,7 @@
 
                 <el-table-column prop="store" label="仓库" align="center"></el-table-column>
 
-                <el-table-column prop="date" label="出库日期" align="center"></el-table-column>
+                <el-table-column prop="date" label="出库日期"  align="center"></el-table-column>
 
                 <el-table-column prop="role" label="经办人" align="center"></el-table-column>
 
@@ -129,6 +129,20 @@
                 </el-table-column>
 
             </el-table>
+
+
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="queryInfo.pagenum"
+                    :page-size="queryInfo.pagesize"
+                    layout="prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+
+
+
+
 
             <!-- 新增标签弹层 -->
 
@@ -314,7 +328,16 @@
             dataList: [],//当前页要展示的列表数据
             formData: {},//表单数据
             dialogFormVisible: false,//控制表单是否可见
-            inorder: {},
+            outOrder: {},
+
+            queryInfo: {
+                outOrder:{
+
+                },
+                pagenum: 1,
+                pagesize: 5
+            },
+            total: 0,
             dialogFormVisible4Edit: false,//编辑表单是否可见
             rules: {//校验规则
                 store: [{required: true, message: '所出仓库为必填项', trigger: 'blur'}],
@@ -326,32 +349,32 @@
 
         //钩子函数，VUE对象初始化完成后自动执行
         created() {
-            this.getAll();
+            this.getUserList();
             this.getUserInfo();
         },
 
         methods: {
-            //列表
-            getAll() {
-                //发送ajax请求
-                axios.get("/outorder").then((res) => {
-                    this.dataList = res.data.data;
-                });
+
+
+            getUserList() {
+                axios.post("/outorder/page",this.queryInfo).then((res) => {
+                    console.log(res.data);
+                    this.dataList = res.data.data.outOrderrows;
+                    this.total = res.data.data.total;
+                })
             },
 
 
-            getByCondition() {
-                //发送ajax请求
-                axios.post("/outorder/condition", this.formData).then((res) => {
-                        if (res.data.code == 20041) {
-                            //展示弹层，加载数据
-                            this.dataList = res.data.data;
-                        } else {
-                            this.$message.error(res.data.msg);
-                        }
-                    }
-                );
+            handleSizeChange(newSize) {
+                this.queryInfo.pagenum = newSize;
+                this.getUserList();
             },
+
+            handleCurrentChange(newPage) {
+                this.queryInfo.pagenum = newPage;
+                this.getUserList();
+            },
+
 
             getUserInfo() {
 
@@ -388,7 +411,7 @@
                         this.$message.error(res.data.msg);
                     }
                 }).finally(() => {
-                    this.getAll();
+                    this.getUserList();
                 });
             },
 
@@ -422,7 +445,7 @@
                         this.$message.error(res.data.msg);
                     }
                 }).finally(() => {
-                    this.getAll();
+                    this.getUserList();
                 });
             },
 
@@ -440,7 +463,7 @@
                             this.$message.error("删除失败");
                         }
                     }).finally(() => {
-                        this.getAll();
+                        this.getUserList();
                     });
                 }).catch(() => {
                     //3.取消删除

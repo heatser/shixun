@@ -1,10 +1,7 @@
 package com.example.controller;
 
 
-import com.example.domain.Code;
-import com.example.domain.Login;
-import com.example.domain.Result;
-import com.example.domain.User;
+import com.example.domain.*;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -144,6 +141,17 @@ public class UserController {
         int code = flag != false ? Code.SAVE_OK : Code.SAVE_ERR;
         String msg = flag != false ? "" : "ERROR";
         return new Result(code, flag, msg);
+    }
+
+
+    @PostMapping("/page")
+    public Result selectPage(@RequestBody PageResult pageResult) {
+
+        PageResult page = userService.selectPage(pageResult);
+
+        int code = page != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = page != null ? "" : "ERROR";
+        return new Result(code, page, msg);
     }
 
 

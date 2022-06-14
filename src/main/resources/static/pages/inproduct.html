@@ -10,7 +10,7 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>出库清单</title>
+    <title>入库清单</title>
 
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
 
@@ -31,12 +31,6 @@
 <div id="app">
 
     <div class="content-header">
-
-
-        <!--        <el-button type="primary" round>主要按钮</el-button>-->
-        <!--        <el-button type="primary" round>主要按钮</el-button>-->
-        <!--        <el-button type="primary" round>主要按钮</el-button>-->
-        <!--        <el-button type="primary" round>主要按钮</el-button>-->
 
 
         <el-menu
@@ -76,28 +70,28 @@
 
             <div class="filter-container">
 
-                <el-form :inline="true" :model="formData" class="demo-form-inline">
+                <el-form :inline="true" :model="queryInfo.product" class="demo-form-inline">
 
 
                     <el-form-item label="品名">
-                        <el-input v-model="formData.name" placeholder="品名"></el-input>
+                        <el-input v-model="queryInfo.product.name" placeholder="品名"></el-input>
                     </el-form-item>
 
                     <el-form-item label="货号">
-                        <el-input v-model="formData.no" placeholder="货号"></el-input>
+                        <el-input v-model="queryInfo.product.no" placeholder="货号"></el-input>
                     </el-form-item>
 
                     <el-form-item label="色号">
-                        <el-input v-model="formData.color" placeholder="色号"></el-input>
+                        <el-input v-model="queryInfo.product.color" placeholder="色号"></el-input>
                     </el-form-item>
 
                     <el-form-item label="订单号">
-                        <el-input v-model="formData.orderid" placeholder="订单号"></el-input>
+                        <el-input v-model="queryInfo.product.orderid" placeholder="订单号"></el-input>
                     </el-form-item>
 
 
                     <el-form-item>
-                        <el-button type="primary" @click="getByCondition()">查询</el-button>
+                        <el-button type="primary" @click="getUserList">查询</el-button>
                     </el-form-item>
 
                 </el-form>
@@ -135,6 +129,16 @@
                 </el-table-column>
 
             </el-table>
+
+
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="queryInfo.pagenum"
+                    :page-size="queryInfo.pagesize"
+                    layout="prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
 
 
             <div class="add-form">
@@ -215,6 +219,14 @@
             formData: {
                 type: "0"
             },//表单数据
+            queryInfo: {
+                product:{
+                    type: "0"
+                },
+                pagenum: 1,
+                pagesize: 5
+            },
+            total: 0,
             dialogFormVisible: false,//控制表单是否可见
             inorder: {},
             dialogFormVisible4Edit: false,//编辑表单是否可见
@@ -226,31 +238,28 @@
 
         //钩子函数，VUE对象初始化完成后自动执行
         created() {
-            this.getAll();
+            this.getUserList();
             this.getUserInfo();
         },
 
         methods: {
-            //列表
-            getAll() {
-                //发送ajax请求
-                axios.get("/product/in").then((res) => {
-                    this.dataList = res.data.data;
-                });
+
+
+            getUserList() {
+                axios.post("/product/in/page",this.queryInfo).then((res) => {
+                    console.log(res.data);
+                    this.dataList = res.data.data.productrows;
+                    this.total = res.data.data.total;
+                })
+            },
+            handleSizeChange(newSize) {
+                this.queryInfo.pagenum = newSize;
+                this.getUserList();
             },
 
-
-            getByCondition() {
-                //发送ajax请求
-                axios.post("/product/condition", this.formData).then((res) => {
-                        if (res.data.code == 20041) {
-                            //展示弹层，加载数据
-                            this.dataList = res.data.data;
-                        } else {
-                            this.$message.error(res.data.msg);
-                        }
-                    }
-                );
+            handleCurrentChange(newPage) {
+                this.queryInfo.pagenum = newPage;
+                this.getUserList();
             },
 
             getUserInfo() {
@@ -288,7 +297,7 @@
                         this.$message.error(res.data.msg);
                     }
                 }).finally(() => {
-                    this.getAll();
+                    this.getUserList();
                 });
             },
 
@@ -322,7 +331,7 @@
                         this.$message.error(res.data.msg);
                     }
                 }).finally(() => {
-                    this.getAll();
+                    this.getUserList();
                 });
             },
 
@@ -340,7 +349,7 @@
                             this.$message.error("删除失败");
                         }
                     }).finally(() => {
-                        this.getAll();
+                        this.getUserList();
                     });
                 }).catch(() => {
                     //3.取消删除

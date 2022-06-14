@@ -3,6 +3,7 @@ package com.example.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.domain.InOrder;
 import com.example.domain.OutOrder;
+import com.example.domain.PageResult;
 import com.example.domain.User;
 
 import java.util.Date;
@@ -20,4 +21,5 @@ public interface OutOrderService extends IService<OutOrder> {
 
     public List<OutOrder> selectByCondition(OutOrder outOrder);
 
+    public PageResult selectPage(PageResult pageResult);
 }

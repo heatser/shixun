@@ -5,8 +5,12 @@ import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CacheType;
 import com.alicp.jetcache.anno.CreateCache;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dao.UserDao;
+import com.example.domain.PageResult;
+import com.example.domain.Store;
 import com.example.domain.User;
 import com.example.service.UserService;
 import com.example.utils.CodeUtils;
@@ -14,6 +18,7 @@ import com.example.utils.SendMail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -106,6 +111,39 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         List<User> users = userDao.selectList(lqw);
 
         return users;
+    }
+
+
+    public PageResult selectPage(PageResult pageResult) {
+
+        User user = pageResult.user;
+
+        IPage page = new Page(pageResult.getPagenum(),pageResult.getPagesize());
+
+        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper();
+
+        if(user != null){
+
+            if (user.getName() != null) {
+                lqw.like(User::getName, user.getName());
+            }
+            if (user.getUsername() != null) {
+                lqw.like(User::getUsername, user.getUsername());
+            }
+
+        }
+
+        IPage page1 = userDao.selectPage(page, lqw);
+
+        List<User> rows = page.getRecords();
+
+        long total = page1.getTotal();
+
+
+        pageResult.setTotal(total);
+        pageResult.setUserrows((rows));
+
+        return  pageResult;
     }
 
 }
