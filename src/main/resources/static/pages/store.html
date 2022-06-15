@@ -399,10 +399,10 @@
                 //发送ajax请求
                 axios.put("/store", this.formData).then((res) => {
                     //如果操作成功，关闭弹层，显示数据
-                    if (res.data.code == 20011) {
+                    if (res.data.code == 20031) {
                         this.dialogFormVisible4Edit = false;
                         this.$message.success("修改成功");
-                    } else if (res.data.code == 20010) {
+                    } else if (res.data.code == 20030) {
                         this.$message.error("修改失败");
                     } else {
                         this.$message.error(res.data.msg);

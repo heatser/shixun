@@ -62,6 +62,15 @@ public class StoreController {
     }
 
 
+    @GetMapping("{id}")
+    public Result selectById(@PathVariable int id){
+        Store store = storeService.getById(id);
+        int code = store != null ? Code.SELECT_OK : Code.SELECT_ERR;
+        String msg = store != null ? "" : "ERROR";
+        return new Result(code, store, msg);
+    }
+
+
     @PostMapping("/page")
     public Result selectPage(@RequestBody PageResult pageResult) {
 
