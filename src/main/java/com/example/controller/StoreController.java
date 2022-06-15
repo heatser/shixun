@@ -45,6 +45,10 @@ public class StoreController {
 
     @PutMapping
     public Result update(@RequestBody Store store) {
+        if(store.getAmount()<0){
+            int code = Code.UPDATE_ERR;
+            return new Result(code,false,"error");
+        }
         boolean flag = storeService.updateById(store);
         int code = flag != false ? Code.UPDATE_OK : Code.UPDATE_OK;
         String msg = flag != false ? "" : "ERROR";

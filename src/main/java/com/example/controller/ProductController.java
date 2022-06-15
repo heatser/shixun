@@ -1,10 +1,7 @@
 package com.example.controller;
 
 
-import com.example.domain.Code;
-import com.example.domain.PageResult;
-import com.example.domain.Product;
-import com.example.domain.Result;
+import com.example.domain.*;
 import com.example.service.ProductService;
 import com.example.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,10 +115,36 @@ public class ProductController {
     @DeleteMapping("{id}")
 
     public Result delete(@PathVariable int id) {
-        boolean flag = productService.removeById(id);
-        int code = flag != false ? Code.DELETE_OK : Code.DELETE_ERR;
-        String msg = flag != false ? "" : "ERROR";
-        return new Result(code, flag, msg);
+        Product product = productService.getById(id);
+        Store store = storeService.getById(product.getStoreid());
+
+        int amount1 = store.getAmount();
+        int amount = product.getAmount();
+        amount1 = amount1 - amount;
+
+
+        if(product.getType().equals("0") && amount1>0){
+            boolean flag = productService.removeById(id);
+            boolean flag1 = storeService.changeAmountByProductIdANDAmount(store.getId(), amount);
+            if(flag1 == flag){
+                int code = flag != false ? Code.DELETE_OK : Code.DELETE_ERR;
+                String msg = flag != false ? "" : "ERROR";
+                return new Result(code, flag, msg);
+            }
+            else{
+                return new Result(Code.DELETE_ERR,false,"error");
+            }
+        }else if(product.getType().equals("1")){
+            store.setAmount(store.getAmount()+amount);
+            storeService.updateById(store);
+            boolean flag = productService.removeById(id);
+            int code = flag != false ? Code.DELETE_OK : Code.DELETE_ERR;
+            String msg = flag != false ? "" : "ERROR";
+            return new Result(code, flag, msg);
+        }else {
+            return new Result(Code.DELETE_ERR,false,"error");
+        }
+
     }
 
 
