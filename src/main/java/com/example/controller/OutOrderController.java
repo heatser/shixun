@@ -103,7 +103,7 @@ public class OutOrderController {
         return new Result(code, flag, msg);
     }
 
-    @PutMapping("{id}")
+    @DeleteMapping("{id}")
     public Result delete(@PathVariable int id){
         boolean flag = outOrderService.removeById(id);
         int code = flag != false ? Code.DELETE_OK : Code.DELETE_ERR;
