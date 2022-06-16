@@ -34,12 +34,17 @@ public class UserController {
 
     @GetMapping("/userid")
     public Result userid(){
-        int logininfo = Integer.parseInt(userService.logininfo());
+        String logininfo = userService.logininfo();
 
-
+        System.out.println("--------");
         System.out.println(logininfo);
+        System.out.println("+++++++++");
+        if(logininfo == null){
+            return new Result(Code.SELECT_ERR,null,"error");
+        }
 
-        User user = userService.selectById(logininfo);
+
+        User user = userService.selectById(Integer.parseInt(logininfo));
 
         int code = user != null ? Code.SELECT_OK : Code.SELECT_ERR;
         String msg = user != null ? "" : "ERROR";
@@ -116,6 +121,7 @@ public class UserController {
     //修改密码
     public Result updatePassword(@RequestBody User user) {
         boolean flag = userService.updateById(user);
+
         int code = flag != false ? Code.UPDATE_OK : Code.UPDATE_ERR;
         String msg = flag != false ? "" : "ERROR";
 

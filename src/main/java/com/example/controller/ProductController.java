@@ -175,8 +175,6 @@ public class ProductController {
 
 
 
-
-
     @GetMapping("/no/{id}")
     public Result changeNo(@PathVariable int id){
         boolean flag = productService.changeno(id);

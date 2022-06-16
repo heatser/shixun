@@ -168,7 +168,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
         String nowTime = String.valueOf(System.currentTimeMillis());
 
 
-        if(product.getType().equals(0)){
+        if(product.getType().equals("0")){
             String no = in + storeno + nowTime;
             product.setNo(no);
         }else {

@@ -273,7 +273,7 @@
             getUserInfo() {
 
                 axios.get("/user/userid").then((res) => {
-                    if(res.data.code = 20041){
+                    if(res.data.code == 20041){
                         this.username = res.data.data;
                     }else{
                         alert("登录超时，请重新登录");
