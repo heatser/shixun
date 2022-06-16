@@ -214,15 +214,6 @@
 
                             </el-col>
 
-                            <el-col :span="12">
-
-                                <el-form-item label="单据编号" prop="no">
-
-                                    <el-input v-model="formData.no"/>
-
-                                </el-form-item>
-
-                            </el-col>
 
                             <el-col :span="12">
 
@@ -497,6 +488,7 @@
             //添加明细
             handleAddProduct() {
                 //发送ajax请求
+                console.log(this.outproduct)
                 axios.post("/product", this.outproduct).then((res) => {
                     console.log(res.data);
                     //如果操作成功，关闭弹层，显示数据

@@ -22,4 +22,6 @@ public interface OutOrderService extends IService<OutOrder> {
     public List<OutOrder> selectByCondition(OutOrder outOrder);
 
     public PageResult selectPage(PageResult pageResult);
+
+    public boolean save(OutOrder outOrder);
 }

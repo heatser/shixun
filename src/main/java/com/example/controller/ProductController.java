@@ -71,6 +71,7 @@ public class ProductController {
         String msg = "";
 
         boolean flag1 = storeService.changeAmountByProduct(product);
+
         if (flag1 == true) {
             flag = productService.save(product);
             code = flag != false ? Code.SAVE_OK : Code.SAVE_ERR;

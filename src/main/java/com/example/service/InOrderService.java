@@ -25,4 +25,6 @@ public interface InOrderService extends IService<InOrder> {
 
     public PageResult selectPage(PageResult pageResult);
 
+    public boolean save(InOrder inOrder);
+
 }

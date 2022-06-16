@@ -21,6 +21,7 @@ public interface StoreService extends IService<Store> {
 
     public PageResult selectPage(PageResult pageResult);
 
+    public boolean save(Store store);
 
 
 

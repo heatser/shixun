@@ -9,6 +9,8 @@ import com.example.domain.PageResult;
 import com.example.domain.Product;
 import com.example.domain.Store;
 import com.example.service.StoreService;
+import com.example.utils.AutoName;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +24,32 @@ public class StoreServiceImpl extends ServiceImpl<StoreDao, Store> implements St
     @Autowired
     private StoreDao storeDao;
 
+    @Autowired
+    private AutoName autoName;
+
     public int selectAmountById(int id){
         int amount = storeDao.selectAmountById(id);
         return amount;
     }
+
+    public boolean save(Store store){
+
+        String nowTime = String.valueOf(System.currentTimeMillis());
+        String randomString = RandomStringUtils.randomAlphabetic(5);
+        String randomInt = RandomStringUtils.randomNumeric(6);
+        String name = nowTime.substring(10)+randomString + randomInt ;
+
+
+
+        store.setNo(name);
+        int i = storeDao.insert(store);
+        if(i !=0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 
     public boolean changeAmountByProduct(Product product){
         Store store = storeDao.selectById(product.getStoreid());

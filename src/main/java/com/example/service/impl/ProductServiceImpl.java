@@ -10,6 +10,7 @@ import com.example.domain.PageResult;
 import com.example.domain.Product;
 import com.example.domain.Store;
 import com.example.service.ProductService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -128,23 +129,27 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
     public boolean save(Product product) {
 
         Store store = storeDao.selectById(product.getStoreid());
-        if(product.getName()==null){
+        if(product.getOrderid()!=0){
             product.setName(store.getName());
             product.setColor(store.getColor());
             product.setSize(store.getSize());
         }
 
+//        String nowTime = String.valueOf(System.currentTimeMillis());
+        String randomString = RandomStringUtils.randomAlphabetic(5);
+        String randomInt = RandomStringUtils.randomNumeric(6);
+
         String in = "in";
         String out = "out";
-        String storeno = store.getNo();
-        String nowTime = String.valueOf(System.currentTimeMillis());
 
 
         if(product.getType().equals(0)){
-            String no = in + storeno + nowTime;
+            String no = in + randomString  + randomInt;
+//            String no = in ;
             product.setNo(no);
         }else {
-            String no = out + storeno + nowTime;
+            String no = out + randomString  + randomInt;
+//            String no = out;
             product.setNo(no);
         }
 

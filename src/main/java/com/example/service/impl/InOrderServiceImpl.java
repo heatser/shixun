@@ -9,6 +9,8 @@ import com.example.domain.InOrder;
 import com.example.domain.OutOrder;
 import com.example.domain.PageResult;
 import com.example.service.InOrderService;
+import com.example.utils.AutoName;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,9 @@ public class InOrderServiceImpl extends ServiceImpl<InOrderDao, InOrder> impleme
 
     @Autowired
     private InOrderDao inOrderDao;
+
+    @Autowired
+    private AutoName autoName;
 
     public List<InOrder> selectAllAndDeleted(){
         List<InOrder> inOrders = inOrderDao.selectAllAndDeleted();
@@ -98,6 +103,24 @@ public class InOrderServiceImpl extends ServiceImpl<InOrderDao, InOrder> impleme
         pageResult.setTotal(total);
         pageResult.setInOrderrows(rows);
         return  pageResult;
+    }
+
+    @Override
+    public boolean save(InOrder inOrder) {
+
+        String nowTime = String.valueOf(System.currentTimeMillis());
+        String randomString = RandomStringUtils.randomAlphabetic(5);
+        String randomInt = RandomStringUtils.randomNumeric(6);
+        String name = nowTime.substring(13)+randomString + randomInt ;
+
+
+        inOrder.setNo(name);
+        int insert = inOrderDao.insert(inOrder);
+        if(insert != 0){
+            return true;
+        }else {
+            return false;
+        }
     }
 
 }

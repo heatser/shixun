@@ -4,6 +4,8 @@ package com.example.controller;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.example.domain.*;
 import com.example.service.OutOrderService;
+import com.example.utils.AutoName;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,23 @@ public class OutOrderController {
 
     @Autowired
     private OutOrderService outOrderService;
+//    @Autowired
+//    private AutoName autoName;
+//
+//    @PutMapping("/changename/{id}")
+//    public Result changeName(@PathVariable int id){
+//
+//        String nowTime = String.valueOf(System.currentTimeMillis());
+//        String randomString = RandomStringUtils.randomAlphabetic(5);
+//        String randomInt = RandomStringUtils.randomNumeric(6);
+//        String name = nowTime.substring(13)+randomString + randomInt ;
+//
+//        OutOrder outOrder = outOrderService.getById(id);
+//        outOrder.setNo(name);
+//        outOrderService.updateById(outOrder);
+//        return new Result(Code.UPDATE_OK,true,"");
+//    }
+
 
     @GetMapping
     public Result selectAll(){
