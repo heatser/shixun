@@ -12,5 +12,6 @@ import java.util.List;
 public interface ProductDao extends BaseMapper<Product> {
 
     @Select("select * from product ")
+    //查询所有包括逻辑删除
     public List<Product> selectAllAndDeleted();
 }

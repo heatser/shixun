@@ -21,20 +21,20 @@ public class InOrderController {
 //    private AutoName autoName;
 
 
-    @GetMapping
-    public Result selectAll(){
-        List<InOrder> list = inOrderService.list(null);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
+//    @GetMapping
+//    public Result selectAll(){
+//        List<InOrder> list = inOrderService.list(null);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//
+//        System.out.println("---------");
+//
+//        return new Result(code, list, msg);
+//
+//    }
 
-        System.out.println("---------");
 
-        return new Result(code, list, msg);
-
-    }
-
-
-    @GetMapping("{id}")
+    @GetMapping("{id}")   //根据id查询
     public Result selectById(@PathVariable int id){
         InOrder inOrder = inOrderService.selectById(id);
         int code = inOrder != null ? Code.SELECT_OK : Code.SELECT_ERR;
@@ -44,42 +44,42 @@ public class InOrderController {
     }
 
 
-    @PostMapping("/condition")
-    public Result selectByCondition(@RequestBody InOrder inOrder){
-        List<InOrder> list = inOrderService.selectByCondition(inOrder);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
-    }
+//    @PostMapping("/condition")
+//    public Result selectByCondition(@RequestBody InOrder inOrder){
+//        List<InOrder> list = inOrderService.selectByCondition(inOrder);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//    }
 
 
 
-    @GetMapping("/store/{store}")
-    public Result selectByStore(@PathVariable String store){
-        List<InOrder> list = inOrderService.selectByStore(store);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
+//    @GetMapping("/store/{store}")
+//    public Result selectByStore(@PathVariable String store){
+//        List<InOrder> list = inOrderService.selectByStore(store);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//
+//    }
 
-    }
+//    @GetMapping("/date/{date}")
+//    public Result selectByDate(@PathVariable Date date){
+//        List<InOrder> list = inOrderService.selectByDate(date);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//
+//    }
 
-    @GetMapping("/date/{date}")
-    public Result selectByDate(@PathVariable Date date){
-        List<InOrder> list = inOrderService.selectByDate(date);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
-
-    }
-
-    @GetMapping("/no/{no}")
-    public Result selectByNo(@PathVariable String no){
-        List<InOrder> list = inOrderService.selectByNo(no);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
-
-    }
+//    @GetMapping("/no/{no}")
+//    public Result selectByNo(@PathVariable String no){
+//        List<InOrder> list = inOrderService.selectByNo(no);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//
+//    }
 
 //    @PutMapping("/changename/{id}")
 //    public Result changeName(@PathVariable int id){
@@ -97,7 +97,7 @@ public class InOrderController {
 //    }
 
 
-    @PostMapping
+    @PostMapping   //新增入库单
     public Result save(@RequestBody InOrder inOrder){
         java.util.Date day=new Date();
         inOrder.setDate(day);
@@ -107,7 +107,7 @@ public class InOrderController {
         return new Result(code, flag, msg);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")   //根据id逻辑删除入库单
     public Result delete(@PathVariable int id){
         boolean flag = inOrderService.removeById(id);
         int code = flag != false ? Code.DELETE_OK : Code.DELETE_ERR;
@@ -115,7 +115,7 @@ public class InOrderController {
         return new Result(code, flag, msg);
     }
 
-    @PutMapping
+    @PutMapping   //更新入库单
     public Result update(@RequestBody InOrder inOrder)
     {
         boolean flag = inOrderService.updateById(inOrder);
@@ -124,7 +124,7 @@ public class InOrderController {
         return new Result(code, flag, msg);
     }
 
-    @PostMapping("/page")
+    @PostMapping("/page")   //分页同时进行多条件模糊查询
     public Result selectPage(@RequestBody PageResult pageResult) {
 
         PageResult page = inOrderService.selectPage(pageResult);

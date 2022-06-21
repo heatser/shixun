@@ -11,6 +11,7 @@ public interface StoreDao extends BaseMapper<Store> {
 
 
     @Select("select amount from store where id=#{id}")
+    //根据id来查询数量
     public int selectAmountById(int id);
 
 

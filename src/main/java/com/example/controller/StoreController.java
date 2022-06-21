@@ -37,7 +37,7 @@ public class StoreController {
 
 
 
-    @PutMapping("/product")
+    @PutMapping("/product")  //根据明细修改数量
     public Result changeAmountByProduct(@RequestBody Product product) {
         boolean flag = storeService.changeAmountByProduct(product);
         int code = flag != false ? Code.UPDATE_OK : Code.UPDATE_OK;
@@ -45,7 +45,7 @@ public class StoreController {
         return new Result(code, flag, msg);
     }
 
-    @GetMapping
+    @GetMapping  //查询所有库存数据
     public Result selectAll() {
         List<Store> list = storeService.list();
         int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
@@ -53,16 +53,17 @@ public class StoreController {
         return new Result(code, list, msg);
     }
 
-    @PostMapping("/condition")
-    public Result selectByCondition(@RequestBody Store store) {
-        List<Store> list = storeService.selectByCondition(store);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
-    }
+//    @PostMapping("/condition")
+//    public Result selectByCondition(@RequestBody Store store) {
+//        List<Store> list = storeService.selectByCondition(store);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//    }
 
-    @PutMapping
+    @PutMapping  //更新库存
     public Result update(@RequestBody Store store) {
+        //如果修改的库存为负数，则返回错误
         if(store.getAmount()<0){
             int code = Code.UPDATE_ERR;
             return new Result(code,false,"error");
@@ -73,7 +74,7 @@ public class StoreController {
         return new Result(code, flag, msg);
     }
 
-    @PostMapping
+    @PostMapping   //新增商品库存
     public Result sava(@RequestBody Store store) {
         boolean flag = storeService.save(store);
         int code = flag != false ? Code.SAVE_OK : Code.SAVE_ERR;
@@ -82,7 +83,7 @@ public class StoreController {
     }
 
 
-    @GetMapping("{id}")
+    @GetMapping("{id}")  //根据id查询单行库存数据
     public Result selectById(@PathVariable int id){
         Store store = storeService.getById(id);
         int code = store != null ? Code.SELECT_OK : Code.SELECT_ERR;
@@ -91,7 +92,7 @@ public class StoreController {
     }
 
 
-    @PostMapping("/page")
+    @PostMapping("/page")   //分页同时多条件模糊查询
     public Result selectPage(@RequestBody PageResult pageResult) {
 
         PageResult page = storeService.selectPage(pageResult);

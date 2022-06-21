@@ -33,12 +33,16 @@ public class UserController {
     }
 
     @GetMapping("/userid")
+    //查询登录用户信息
     public Result userid(){
+
+
         String logininfo = userService.logininfo();
 
         System.out.println("--------");
         System.out.println(logininfo);
         System.out.println("+++++++++");
+        //如果redis库中没有用户登录信息，则返回错误值
         if(logininfo == null){
             return new Result(Code.SELECT_ERR,null,"error");
         }
@@ -52,7 +56,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/email")
+    @PostMapping("/email")   //根据email来生成验证码并发送邮件
     public Result loginByEmail(@RequestBody Login login) {
         String trueCode = userService.loginByEmail(login.getEmail());
         int code = trueCode != null ? Code.SELECT_OK : Code.SELECT_ERR;
@@ -60,7 +64,7 @@ public class UserController {
         return new Result(code, trueCode, msg);
     }
 
-    @PostMapping("/checkcode")
+    @PostMapping("/checkcode")   //将邮件与验证码做比较，验证是否正确
     public Result checkCode(@RequestBody Login login) {
         boolean flag = userService.checkCode(login.getEmail(), login.getCheckcode());
         int code = flag != false ? Code.SELECT_OK : Code.SELECT_ERR;
@@ -70,7 +74,7 @@ public class UserController {
 
 
     @GetMapping
-    //查询所有
+    //查询所有用户
     public Result selectAll() {
         List<User> list = userService.list();
         int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
@@ -78,34 +82,34 @@ public class UserController {
         return new Result(code, list, msg);
     }
 
-    @PostMapping("/condition")
-    public Result selectByCondition(@RequestBody User user){
-        List<User> list = userService.selectByCondition(user);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
-    }
+//    @PostMapping("/condition")
+//    public Result selectByCondition(@RequestBody User user){
+//        List<User> list = userService.selectByCondition(user);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//    }
 
 
-    @GetMapping("/name/{name}")
-    //根据名字查询
-    public Result selectByName(@PathVariable String name) {
-        List<User> list = userService.selectByName(name);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
+//    @GetMapping("/name/{name}")
+//    //根据名字查询
+//    public Result selectByName(@PathVariable String name) {
+//        List<User> list = userService.selectByName(name);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//
+//    }
 
-    }
-
-    @GetMapping("/username/{name}")
-    //根据账户号查询
-    public Result selectByUserName(@PathVariable String name) {
-        List<User> list = userService.selectByUserName(name);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
-
-    }
+//    @GetMapping("/username/{name}")
+//    //根据账户号查询
+//    public Result selectByUserName(@PathVariable String name) {
+//        List<User> list = userService.selectByUserName(name);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//
+//    }
 
 
     @GetMapping("/{id}")
@@ -150,7 +154,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/page")
+    @PostMapping("/page")  //分页并多条件查询
     public Result selectPage(@RequestBody PageResult pageResult) {
 
         PageResult page = userService.selectPage(pageResult);

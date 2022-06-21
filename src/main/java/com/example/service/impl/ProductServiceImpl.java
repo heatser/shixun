@@ -25,60 +25,60 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
     @Autowired
     private StoreDao storeDao;
 
-    public List<Product> selectAllAndDeleted(){
+    public List<Product> selectAllAndDeleted(){    //查询所有入库单数据（包括逻辑删除的），但没有使用
         List<Product> products = productDao.selectAllAndDeleted();
 
         return products;
     }
 
-    public List<Product> selectOut(){
+//    public List<Product> selectOut(){
+//
+//        LambdaQueryWrapper<Product> lqw = new LambdaQueryWrapper<Product>();
+//        lqw.eq(Product::getType, "1");
+//        List<Product> products = productDao.selectList(lqw);
+//        return products;
+//
+//    }
+//
+//    public List<Product> selectIn(){
+//        LambdaQueryWrapper<Product> lqw = new LambdaQueryWrapper<Product>();
+//        lqw.eq(Product::getType, "0");
+//        List<Product> products = productDao.selectList(lqw);
+//        return products;
+//    }
+//
+//    public List<Product> selectByCondition(Product product){
+//        LambdaQueryWrapper<Product> lqw = new LambdaQueryWrapper<Product>();
+//
+//        lqw.eq(Product::getType,product.getType());
+//
+//
+//        int orderid = product.getOrderid();
+//        if(orderid!=0)
+//        {
+//            lqw.eq(Product::getOrderid,product.getOrderid());
+//        }
+//
+//        if(product.getNo()!=null)
+//        {
+//            lqw.like(Product::getNo,product.getNo());
+//        }
+//        if(product.getColor()!=null)
+//        {
+//            lqw.like(Product::getColor,product.getColor());
+//        }
+//        if(product.getName()!=null)
+//        {
+//            lqw.like(Product::getName,product.getName());
+//        }
+//
+//        List<Product> products = productDao.selectList(lqw);
+//
+//        return products;
+//    }
 
-        LambdaQueryWrapper<Product> lqw = new LambdaQueryWrapper<Product>();
-        lqw.eq(Product::getType, "1");
-        List<Product> products = productDao.selectList(lqw);
-        return products;
 
-    }
-
-    public List<Product> selectIn(){
-        LambdaQueryWrapper<Product> lqw = new LambdaQueryWrapper<Product>();
-        lqw.eq(Product::getType, "0");
-        List<Product> products = productDao.selectList(lqw);
-        return products;
-    }
-
-    public List<Product> selectByCondition(Product product){
-        LambdaQueryWrapper<Product> lqw = new LambdaQueryWrapper<Product>();
-
-        lqw.eq(Product::getType,product.getType());
-
-
-        int orderid = product.getOrderid();
-        if(orderid!=0)
-        {
-            lqw.eq(Product::getOrderid,product.getOrderid());
-        }
-
-        if(product.getNo()!=null)
-        {
-            lqw.like(Product::getNo,product.getNo());
-        }
-        if(product.getColor()!=null)
-        {
-            lqw.like(Product::getColor,product.getColor());
-        }
-        if(product.getName()!=null)
-        {
-            lqw.like(Product::getName,product.getName());
-        }
-
-        List<Product> products = productDao.selectList(lqw);
-
-        return products;
-    }
-
-
-    @Override
+    @Override   //分页同时多条件查询
     public PageResult selectPage(PageResult pageResult) {
 
         Product product = pageResult.product;
@@ -87,8 +87,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
 
         LambdaQueryWrapper<Product> lqw = new LambdaQueryWrapper();
 
+        //做多条件判断
         if(product != null){
 
+            //做出库入库判断
             int orderid = product.getOrderid();
 
             lqw.eq(Product::getType,product.getType());
@@ -115,8 +117,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
 
         IPage page1 = productDao.selectPage(page, lqw);
 
+        //获取分页单页数据
         List<Product> rows = page.getRecords();
 
+        //获取总页数
         long total = page1.getTotal();
 
         pageResult.setTotal(total);
@@ -125,17 +129,18 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
         return  pageResult;
     }
 
-    @Override
+    @Override   //新增明细
     public boolean save(Product product) {
 
         Store store = storeDao.selectById(product.getStoreid());
+        //判断是否为空
         if(product.getOrderid()!=0){
             product.setName(store.getName());
             product.setColor(store.getColor());
             product.setSize(store.getSize());
         }
 
-//        String nowTime = String.valueOf(System.currentTimeMillis());
+        //随机数组成明细编号
         String randomString = RandomStringUtils.randomAlphabetic(5);
         String randomInt = RandomStringUtils.randomNumeric(6);
 
@@ -143,13 +148,12 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
         String out = "out";
 
 
+        //做随机明细货号处理
         if(product.getType().equals("0")){
             String no = in + randomString  + randomInt;
-//            String no = in ;
             product.setNo(no);
         }else {
             String no = out + randomString  + randomInt;
-//            String no = out;
             product.setNo(no);
         }
 
@@ -157,28 +161,28 @@ public class ProductServiceImpl extends ServiceImpl<ProductDao, Product> impleme
         return true;
     }
 
-    @Override
-    public boolean changeno(int id) {
-        Product product = productDao.selectById(id);
-        Store store = storeDao.selectById(product.getStoreid());
-
-        String in = "in";
-        String out = "out";
-        String storeno = store.getNo();
-        String nowTime = String.valueOf(System.currentTimeMillis());
-
-
-        if(product.getType().equals("0")){
-            String no = in + storeno + nowTime;
-            product.setNo(no);
-        }else {
-            String no = out + storeno + nowTime;
-            product.setNo(no);
-        }
-
-        productDao.updateById(product);
-
-        return true;
-    }
+//    @Override
+//    public boolean changeno(int id) {
+//        Product product = productDao.selectById(id);
+//        Store store = storeDao.selectById(product.getStoreid());
+//
+//        String in = "in";
+//        String out = "out";
+//        String storeno = store.getNo();
+//        String nowTime = String.valueOf(System.currentTimeMillis());
+//
+//
+//        if(product.getType().equals("0")){
+//            String no = in + storeno + nowTime;
+//            product.setNo(no);
+//        }else {
+//            String no = out + storeno + nowTime;
+//            product.setNo(no);
+//        }
+//
+//        productDao.updateById(product);
+//
+//        return true;
+//    }
 
 }

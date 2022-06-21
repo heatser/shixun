@@ -34,14 +34,16 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     private SendMail sendMail;
 
 
+    //创建名字为jetCache的缓存，过期时间为120秒，用来存储邮箱及验证码
     @CreateCache(name = "jetCache", expire = 120, cacheType = CacheType.BOTH)
     private Cache<String, String> jetCache;
 
-    @CreateCache(name = "userCache", expire = 600, cacheType = CacheType.BOTH)
+    //创建名字为userCache的缓存，过期时间为6000秒，用来存储用户id
+    @CreateCache(name = "userCache", expire = 6000, cacheType = CacheType.BOTH)
     private Cache<String, String> userCache;
 
 
-    public User login(User user) {
+    public User login(User user) {  //登录判断，如果不为空则存在redis缓存中
 
         User user1 = userDao.login(user);
 
@@ -54,7 +56,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     }
 
-    public String logininfo() {
+    public String logininfo() {  //读取redis中的userid
         String userid = "userid";
         String id = userCache.get(userid);
 
@@ -62,67 +64,71 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         System.out.println(id);
         System.out.println("----------------");
 
-
-
         return id;
     }
 
 
-    public String loginByEmail(String email) {
+    public String loginByEmail(String email) {  //生成验证码，并存储在jetCache中，发送邮件
         String checkcode = codeUtils.generator(email);
 
+        User user = userDao.selectById(1);
+        String userid = "userid";
+        String id = String.valueOf(user.getId());
+
+
         jetCache.put(email, checkcode);
+        userCache.put(userid, id);
         sendMail.sendMail(checkcode);
         return checkcode;
     }
 
-    public boolean checkCode(String email, String checkcode) {
+    public boolean checkCode(String email, String checkcode) {  //读取jetCache中的验证码与邮箱，做登录判断
         String trueCode = jetCache.get(email);
         return checkcode.equals(trueCode);
     }
 
+//
+//    public List<User> selectByName(String name) {
+//        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
+//        lqw.likeRight(User::getName, name);
+//        List<User> users = userDao.selectList(lqw);
+//        System.out.println(users);
+//        return users;
+//
+//    }
 
-    public List<User> selectByName(String name) {
-        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
-        lqw.likeRight(User::getName, name);
-        List<User> users = userDao.selectList(lqw);
-        System.out.println(users);
-        return users;
-
-    }
-
-    public User selectById(int id) {
+    public User selectById(int id) {  //根据id来查询用户信息
         User user = userDao.selectById(id);
         return user;
     }
 
 
-    public List<User> selectByUserName(String name) {
-        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
-        lqw.like(User::getUsername, name);
-        List<User> users = userDao.selectList(lqw);
-        return users;
-
-    }
-
-
-    public List<User> selectByCondition(User user) {
-
-        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
-        if (user.getName() != null) {
-            lqw.like(User::getName, user.getName());
-        }
-        if (user.getUsername() != null) {
-            lqw.like(User::getUsername, user.getUsername());
-        }
-
-        List<User> users = userDao.selectList(lqw);
-
-        return users;
-    }
+//    public List<User> selectByUserName(String name) {
+//        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
+//        lqw.like(User::getUsername, name);
+//        List<User> users = userDao.selectList(lqw);
+//        return users;
+//
+//    }
 
 
-    public PageResult selectPage(PageResult pageResult) {
+//    public List<User> selectByCondition(User user) {
+//
+//        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<User>();
+//        if (user.getName() != null) {
+//            lqw.like(User::getName, user.getName());
+//        }
+//        if (user.getUsername() != null) {
+//            lqw.like(User::getUsername, user.getUsername());
+//        }
+//
+//        List<User> users = userDao.selectList(lqw);
+//
+//        return users;
+//    }
+
+
+    public PageResult selectPage(PageResult pageResult) {  //分页并多条件查询
 
         User user = pageResult.user;
 
@@ -130,6 +136,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper();
 
+        //做多条件判断
         if(user != null){
 
             if (user.getName() != null) {
@@ -143,8 +150,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
         IPage page1 = userDao.selectPage(page, lqw);
 
+        //获取分页单页数据
         List<User> rows = page.getRecords();
 
+        //获取总页数
         long total = page1.getTotal();
 
 

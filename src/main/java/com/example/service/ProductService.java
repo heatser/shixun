@@ -12,17 +12,17 @@ public interface ProductService extends IService<Product> {
 
     public List<Product> selectAllAndDeleted();
 
-    public List<Product> selectOut();
+//    public List<Product> selectOut();
+//
+//    public List<Product> selectIn();
 
-    public List<Product> selectIn();
-
-    public List<Product> selectByCondition(Product product);
+//    public List<Product> selectByCondition(Product product);
 
     public PageResult selectPage(PageResult pageResult);
 
     public boolean save(Product product);
 
-    public boolean changeno(int id);
+//    public boolean changeno(int id);
 
 
 

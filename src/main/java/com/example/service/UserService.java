@@ -12,9 +12,9 @@ public interface UserService extends IService<User> {
     public User login(User user);
 
 
-    public List<User> selectByName(String name);
-
-    public List<User> selectByUserName(String name);
+//    public List<User> selectByName(String name);
+//
+//    public List<User> selectByUserName(String name);
 
     public User selectById(int id);
 
@@ -22,7 +22,7 @@ public interface UserService extends IService<User> {
 
     public boolean checkCode(String email,String checkcode);
 
-    public List<User> selectByCondition(User user);
+//    public List<User> selectByCondition(User user);
 
     public String logininfo();
 

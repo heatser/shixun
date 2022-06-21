@@ -13,15 +13,15 @@ public interface InOrderService extends IService<InOrder> {
 
     public List<InOrder> selectAllAndDeleted();
 
-    public List<InOrder> selectByStore(String name);
-
-    public List<InOrder> selectByDate(Date date);
-
-    public List<InOrder> selectByNo(String no);
+//    public List<InOrder> selectByStore(String name);
+//
+//    public List<InOrder> selectByDate(Date date);
+//
+//    public List<InOrder> selectByNo(String no);
 
     public InOrder selectById(int id);
 
-    public List<InOrder> selectByCondition(InOrder inOrder);
+//    public List<InOrder> selectByCondition(InOrder inOrder);
 
     public PageResult selectPage(PageResult pageResult);
 

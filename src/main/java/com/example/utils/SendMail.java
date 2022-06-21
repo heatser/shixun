@@ -21,7 +21,7 @@ public class SendMail {
     private String context = "你的验证码为：";
 
 
-
+    //发送邮件及其信息
     public void sendMail(String checkcode) {
 
         String text = context + checkcode;

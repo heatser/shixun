@@ -13,13 +13,13 @@ public interface OutOrderService extends IService<OutOrder> {
 
     public List<OutOrder> selectAllAndDeleted();
 
-    public List<OutOrder> selectByStore(String name);
-
-    public List<OutOrder> selectByDate(Date date);
-
-    public List<OutOrder> selectByNo(String no);
-
-    public List<OutOrder> selectByCondition(OutOrder outOrder);
+//    public List<OutOrder> selectByStore(String name);
+//
+//    public List<OutOrder> selectByDate(Date date);
+//
+//    public List<OutOrder> selectByNo(String no);
+//
+//    public List<OutOrder> selectByCondition(OutOrder outOrder);
 
     public PageResult selectPage(PageResult pageResult);
 

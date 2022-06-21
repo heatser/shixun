@@ -14,8 +14,8 @@ public interface StoreService extends IService<Store> {
     public boolean changeAmountByProduct(Product product);
 
     public int selectAmountById(int id);
-
-    public List<Store> selectByCondition(Store store);
+//
+//    public List<Store> selectByCondition(Store store);
 
     public boolean changeAmountByProductIdANDAmount(int id,int amount);
 

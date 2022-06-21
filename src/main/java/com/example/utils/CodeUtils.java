@@ -8,10 +8,13 @@ public class CodeUtils {
 
     private String [] patch = {"000000","00000","0000","000","00","0",""};
 
+    //随机生成验证码
     public String generator(String tele){
+        //获取哈希值
         int hash = tele.hashCode();
         int encryption = 20206666;
         long result = hash ^ encryption;
+        //获取当前时间
         long nowTime = System.currentTimeMillis();
         result = result ^ nowTime;
         long code = result % 1000000;

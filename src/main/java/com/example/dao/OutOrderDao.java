@@ -11,6 +11,7 @@ import java.util.List;
 public interface OutOrderDao extends BaseMapper<OutOrder> {
 
     @Select("select * from outorder ")
+    //查询所有包括逻辑删除
     public List<OutOrder> selectAllAndDeleted();
 
 }

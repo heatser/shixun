@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 public interface UserDao extends BaseMapper<User> {
 
     @Select("select * from user where username=#{username} AND password=#{password} AND deleted = 0  ")
+    //登录判断
     public User login(User user);
 
 

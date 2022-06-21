@@ -13,6 +13,7 @@ import java.util.List;
 public interface InOrderDao extends BaseMapper<InOrder> {
 
     @Select("select * from inorder ")
+    //查询所有包括逻辑删除
     public List<InOrder> selectAllAndDeleted();
 
 }

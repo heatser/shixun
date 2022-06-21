@@ -39,34 +39,34 @@ public class OutOrderController {
 //    }
 
 
-    @GetMapping
-    public Result selectAll(){
-        List<OutOrder> list = outOrderService.list(null);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
+//    @GetMapping
+//    public Result selectAll(){
+//        List<OutOrder> list = outOrderService.list(null);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//
+//    }
 
-    }
+//    @GetMapping("/store/{store}")
+//    public Result selectByStore(@PathVariable String store){
+//        List<OutOrder> list = outOrderService.selectByStore(store);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//
+//    }
 
-    @GetMapping("/store/{store}")
-    public Result selectByStore(@PathVariable String store){
-        List<OutOrder> list = outOrderService.selectByStore(store);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
+//    @GetMapping("/date/{date}")
+//    public Result selectByDate(@PathVariable Date date){
+//        List<OutOrder> list = outOrderService.selectByDate(date);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//
+//    }
 
-    }
-
-    @GetMapping("/date/{date}")
-    public Result selectByDate(@PathVariable Date date){
-        List<OutOrder> list = outOrderService.selectByDate(date);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
-
-    }
-
-    @GetMapping("{id}")
+    @GetMapping("{id}")  //根据id查询单行数据
     public Result selectById(@PathVariable int id){
         OutOrder outOrder = outOrderService.getById(id);
         int code = outOrder != null ? Code.SELECT_OK : Code.SELECT_ERR;
@@ -76,24 +76,24 @@ public class OutOrderController {
     }
 
 
-    @PostMapping("/condition")
-    public Result selectByCondition(@RequestBody OutOrder outOrder){
-        List<OutOrder> list = outOrderService.selectByCondition(outOrder);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
-    }
+//    @PostMapping("/condition")
+//    public Result selectByCondition(@RequestBody OutOrder outOrder){
+//        List<OutOrder> list = outOrderService.selectByCondition(outOrder);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//    }
 
-    @GetMapping("/no/{no}")
-    public Result selectByNo(@PathVariable String no){
-        List<OutOrder> list = outOrderService.selectByNo(no);
-        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
-        String msg = list != null ? "" : "ERROR";
-        return new Result(code, list, msg);
+//    @GetMapping("/no/{no}")
+//    public Result selectByNo(@PathVariable String no){
+//        List<OutOrder> list = outOrderService.selectByNo(no);
+//        int code = list != null ? Code.SELECT_OK : Code.SELECT_ERR;
+//        String msg = list != null ? "" : "ERROR";
+//        return new Result(code, list, msg);
+//
+//    }
 
-    }
-
-    @PostMapping
+    @PostMapping   //新增出库单
     public Result save(@RequestBody OutOrder outOrder){
         java.util.Date day=new Date();
         outOrder.setDate(day);
@@ -103,7 +103,7 @@ public class OutOrderController {
         return new Result(code, flag, msg);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{id}")   //根据id逻辑删除
     public Result delete(@PathVariable int id){
         boolean flag = outOrderService.removeById(id);
         int code = flag != false ? Code.DELETE_OK : Code.DELETE_ERR;
@@ -111,7 +111,7 @@ public class OutOrderController {
         return new Result(code, flag, msg);
     }
 
-    @PutMapping
+    @PutMapping  //更新出库单
     public Result update(@RequestBody OutOrder outOrder)
     {
         boolean flag = outOrderService.updateById(outOrder);
@@ -123,7 +123,7 @@ public class OutOrderController {
 
 
 
-    @PostMapping("/page")
+    @PostMapping("/page")   //分页同时进行多条件模糊查询
     public Result selectPage(@RequestBody PageResult pageResult) {
 
         PageResult page = outOrderService.selectPage(pageResult);

@@ -24,11 +24,12 @@ public class OutOrderServiceImpl extends ServiceImpl<OutOrderDao, OutOrder> impl
     @Autowired
     private OutOrderDao outOrderDao;
 
-    @Autowired
-    private AutoName autoName;
+//    @Autowired
+//    private AutoName autoName;
 
 
-    public boolean save(OutOrder outOrder) {
+    public boolean save(OutOrder outOrder) {   //新增出库单
+        //随机数加当前时间组成单据编号
         String nowTime = String.valueOf(System.currentTimeMillis());
         String randomString = RandomStringUtils.randomAlphabetic(5);
         String randomInt = RandomStringUtils.randomNumeric(6);
@@ -45,47 +46,47 @@ public class OutOrderServiceImpl extends ServiceImpl<OutOrderDao, OutOrder> impl
     }
 
 
-    public List<OutOrder> selectAllAndDeleted() {
+    public List<OutOrder> selectAllAndDeleted() {  //查询所有入库单数据（包括逻辑删除的），但没有使用
         List<OutOrder> outOrders = outOrderDao.selectAllAndDeleted();
         return outOrders;
     }
 
-    public List<OutOrder> selectByStore(String store) {
-        LambdaQueryWrapper<OutOrder> lqw = new LambdaQueryWrapper<OutOrder>();
-        lqw.like(OutOrder::getStore, store);
-        List<OutOrder> outOrders = outOrderDao.selectList(lqw);
-        return outOrders;
-    }
+//    public List<OutOrder> selectByStore(String store) {
+//        LambdaQueryWrapper<OutOrder> lqw = new LambdaQueryWrapper<OutOrder>();
+//        lqw.like(OutOrder::getStore, store);
+//        List<OutOrder> outOrders = outOrderDao.selectList(lqw);
+//        return outOrders;
+//    }
 
-    public List<OutOrder> selectByDate(Date date) {
-        List<OutOrder> outOrders = outOrderDao.selectAllAndDeleted();
-        return outOrders;
-    }
+//    public List<OutOrder> selectByDate(Date date) {
+//        List<OutOrder> outOrders = outOrderDao.selectAllAndDeleted();
+//        return outOrders;
+//    }
 
-    public List<OutOrder> selectByNo(String no) {
-        LambdaQueryWrapper<OutOrder> lqw = new LambdaQueryWrapper<OutOrder>();
-        lqw.like(OutOrder::getNo, no);
-        List<OutOrder> outOrders = outOrderDao.selectList(lqw);
-        return outOrders;
-    }
+//    public List<OutOrder> selectByNo(String no) {
+//        LambdaQueryWrapper<OutOrder> lqw = new LambdaQueryWrapper<OutOrder>();
+//        lqw.like(OutOrder::getNo, no);
+//        List<OutOrder> outOrders = outOrderDao.selectList(lqw);
+//        return outOrders;
+//    }
 
 
-    public List<OutOrder> selectByCondition(OutOrder outOrder) {
+//    public List<OutOrder> selectByCondition(OutOrder outOrder) {
+//
+//        LambdaQueryWrapper<OutOrder> lqw = new LambdaQueryWrapper<OutOrder>();
+//        if (outOrder.getNo() != null) {
+//            lqw.like(OutOrder::getNo, outOrder.getNo());
+//        }
+//        if (outOrder.getStore() != null) {
+//            lqw.like(OutOrder::getStore, outOrder.getStore());
+//        }
+//
+//        List<OutOrder> outOrders = outOrderDao.selectList(lqw);
+//
+//        return outOrders;
+//    }
 
-        LambdaQueryWrapper<OutOrder> lqw = new LambdaQueryWrapper<OutOrder>();
-        if (outOrder.getNo() != null) {
-            lqw.like(OutOrder::getNo, outOrder.getNo());
-        }
-        if (outOrder.getStore() != null) {
-            lqw.like(OutOrder::getStore, outOrder.getStore());
-        }
-
-        List<OutOrder> outOrders = outOrderDao.selectList(lqw);
-
-        return outOrders;
-    }
-
-    @Override
+    @Override  //分页同时多条件查询
     public PageResult selectPage(PageResult pageResult) {
 
         OutOrder outOrder = pageResult.outOrder;
@@ -94,6 +95,7 @@ public class OutOrderServiceImpl extends ServiceImpl<OutOrderDao, OutOrder> impl
 
         LambdaQueryWrapper<OutOrder> lqw = new LambdaQueryWrapper();
 
+        //做多条件判断
         if (outOrder != null) {
 
             if (outOrder.getNo() != null) {
@@ -106,8 +108,10 @@ public class OutOrderServiceImpl extends ServiceImpl<OutOrderDao, OutOrder> impl
         }
         IPage page1 = outOrderDao.selectPage(page, lqw);
 
+        //获取分页单页数据
         List<OutOrder> rows = page.getRecords();
 
+        //获取总页数
         long total = page1.getTotal();
 
         pageResult.setTotal(total);
